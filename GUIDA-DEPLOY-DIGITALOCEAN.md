@@ -1,4 +1,4 @@
-# 🚀 GUIDA COMPLETA DEPLOY AIVIDEOMAKER SU DIGITALOCEAN
+# 🚀 GUIDA COMPLETA DEPLOY AIVIDEOMAKER SU DI2222GITALOCEAN
 
 **Guida step-by-step per mettere online il tuo sistema AIVideoMaker Freemium**
 
