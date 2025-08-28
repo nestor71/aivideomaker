@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block header_title %}Monthly Limits Reset!{% endblock %}
+
+{% block content %}
+<h2>Good news, {{ user_name }}! 🎉</h2>
+
+<p>Your monthly video processing minutes have been reset and are ready to use.</p>
+
+<div class="alert alert-success">
+    <strong>🔄 Monthly Reset Complete</strong><br>
+    Your {{ tier }} plan limits have been refreshed for the new month.
+</div>
+
+<p><strong>Your {{ tier.title() }} Plan includes:</strong></p>
+{% if tier.lower() == 'free' %}
+<ul>
+    <li>📹 <strong>{{ limit }} minutes</strong> of video processing per month</li>
+    <li>🎬 Maximum <strong>1-minute</strong> video length</li>
+    <li>📱 <strong>HD (720p)</strong> export quality</li>
+    <li>🔖 Videos include watermark</li>
+</ul>
+{% elif tier.lower() == 'premium' %}
+<ul>
+    <li>🚀 <strong>Unlimited</strong> video processing minutes</li>
+    <li>📹 Videos up to <strong>60 minutes</strong> in length</li>
+    <li>🎯 <strong>4K Ultra HD</strong> export quality</li>
+    <li>🚫 <strong>No watermarks</strong></li>
+    <li>⚡ <strong>Priority processing</strong></li>
+</ul>
+{% endif %}
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/" class="button">Start Creating Videos</a>
+</p>
+
+{% if tier.lower() == 'free' %}
+<div class="divider"></div>
+
+<p><strong>Ready for more?</strong> Upgrade to Premium and get:</p>
+<ul>
+    <li>🚀 <strong>Unlimited</strong> video processing</li>
+    <li>📹 <strong>Longer videos</strong> (up to 60 minutes)</li>
+    <li>🎯 <strong>4K quality</strong> exports</li>
+    <li>🚫 <strong>No watermarks</strong></li>
+    <li>⚡ <strong>Priority support</strong></li>
+</ul>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/upgrade" class="button" style="background-color: #28a745;">Upgrade to Premium - $9.99/month</a>
+</p>
+{% endif %}
+
+<div class="divider"></div>
+
+<p><strong>💡 Pro Tips for this month:</strong></p>
+<ul>
+    <li>Plan your video projects in advance</li>
+    <li>Use our AI tools to optimize content</li>
+    <li>Keep videos focused and engaging</li>
+    <li>Preview before final processing</li>
+</ul>
+
+<p>Happy creating!</p>
+<p>The {{ app_name }} Team</p>
+{% endblock %}

@@ -1,0 +1,112 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Environment files
+.env
+.env.*
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Temporary folders
+tmp/
+temp/
+
+# Build artifacts
+build/
+dist/
+
+# Local uploads (will be in volumes)
+app/static/uploads/
+app/static/outputs/
+app/static/temp/
+
+# Database files (development)
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL certificates (will be mounted)
+nginx/ssl/
+
+# Documentation
+docs/
+*.md
+README*
+
+# Scripts (not needed in container)
+scripts/
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Backup files
+*.bak
+*.backup

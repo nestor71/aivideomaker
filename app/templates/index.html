@@ -1,0 +1,647 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold gradient-text mb-3" data-i18n="app.title">AIVideoMaker</h1>
+            <p class="lead text-muted" data-i18n="app.subtitle">AI-powered video editing and YouTube automation</p>
+        </div>
+    </div>
+
+    <!-- Feature Toggles -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-secondary border-primary">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i><span data-i18n="common.feature_settings">Feature Settings</span></h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="logoOverlay" data-feature="logo_overlay">
+                                <label class="form-check-label" for="logoOverlay" data-i18n="features.logo_overlay">Logo Overlay</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="ctaOverlay" data-feature="cta_overlay">
+                                <label class="form-check-label" for="ctaOverlay" data-i18n="features.cta_overlay">Call to Action Overlay</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="transcription" data-feature="transcription">
+                                <label class="form-check-label" for="transcription" data-i18n="features.transcription">Video Transcription</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="translation" data-feature="translation">
+                                <label class="form-check-label" for="translation" data-i18n="features.translation">Video Translation</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="thumbnailGen" data-feature="thumbnail_generation">
+                                <label class="form-check-label" for="thumbnailGen" data-i18n="features.thumbnail_gen">Thumbnail Generation</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="metadataGen" data-feature="metadata_generation">
+                                <label class="form-check-label" for="metadataGen" data-i18n="features.metadata_gen">Metadata Generation</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input feature-toggle" type="checkbox" id="youtubeUpload" data-feature="youtube_upload">
+                                <label class="form-check-label" for="youtubeUpload" data-i18n="features.youtube_upload">YouTube Upload</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Tabs -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-pills nav-fill mb-4" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="video-tab" data-bs-toggle="pill" data-bs-target="#video" type="button" role="tab">
+                        <i class="fas fa-video me-2"></i><span data-i18n="tabs.video_upload">Video Upload</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="logo-tab" data-bs-toggle="pill" data-bs-target="#logo" type="button" role="tab">
+                        <i class="fas fa-image me-2"></i><span data-i18n="tabs.logo_cta">Logo & CTA</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="thumbnail-tab" data-bs-toggle="pill" data-bs-target="#thumbnail" type="button" role="tab">
+                        <i class="fas fa-photo-video me-2"></i><span data-i18n="tabs.thumbnail">Thumbnail</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="metadata-tab" data-bs-toggle="pill" data-bs-target="#metadata" type="button" role="tab">
+                        <i class="fas fa-tags me-2"></i><span data-i18n="tabs.metadata">Metadata</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="audio-tab" data-bs-toggle="pill" data-bs-target="#audio" type="button" role="tab">
+                        <i class="fas fa-language me-2"></i><span data-i18n="audio_translation.title">Audio Translation</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="output-tab" data-bs-toggle="pill" data-bs-target="#output" type="button" role="tab">
+                        <i class="fas fa-download me-2"></i><span data-i18n="tabs.output">Output Files</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="youtube-tab" data-bs-toggle="pill" data-bs-target="#youtube" type="button" role="tab">
+                        <i class="fab fa-youtube me-2"></i><span data-i18n="tabs.youtube">YouTube</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="mainTabsContent">
+                <!-- Video Upload Tab -->
+                <div class="tab-pane fade show active" id="video" role="tabpanel">
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h5 class="mb-0" data-i18n="video_upload.title">Upload Video to Edit</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <!-- Upload from file -->
+                                <div class="col-md-6">
+                                    <h6 class="mb-3" data-i18n="video_upload.upload_file">Upload from File</h6>
+                                    <div class="upload-zone" id="videoUploadZone">
+                                        <div class="upload-content">
+                                            <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-primary"></i>
+                                            <p class="mb-2" data-i18n="video_upload.drop_zone">Drop your video here or click to browse</p>
+                                            <input type="file" id="videoFile" accept="video/*" class="d-none">
+                                            <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('videoFile').click()">
+                                                <i class="fas fa-folder-open me-2"></i><span data-i18n="common.upload">Upload</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Or from URL -->
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center justify-content-center mb-3">
+                                        <hr class="flex-grow-1">
+                                        <span class="px-3 text-muted" data-i18n="common.or">OR</span>
+                                        <hr class="flex-grow-1">
+                                    </div>
+                                    <h6 class="mb-3" data-i18n="video_upload.download_from_url">Download from URL</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="video_upload.video_url">Video URL</label>
+                                        <div class="input-group">
+                                            <input type="url" class="form-control" id="videoUrl" data-placeholder-i18n="video_upload.url_placeholder" placeholder="https://example.com/video.mp4">
+                                            <button class="btn btn-primary" type="button" id="downloadVideoBtn">
+                                                <i class="fas fa-download me-2"></i><span data-i18n="video_upload.download">Download</span>
+                                            </button>
+                                        </div>
+                                        <div class="form-text" data-i18n="video_upload.url_help">Paste a direct video URL to download and process it</div>
+                                    </div>
+                                    
+                                    <!-- Loading indicator for download -->
+                                    <div id="downloadProgress" class="d-none">
+                                        <div class="progress mb-2">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                                        </div>
+                                        <small class="text-muted" data-i18n="video_upload.downloading">Downloading video...</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="videoPreview" class="video-preview d-none">
+                                        <h6 data-i18n="video_upload.preview">Video Preview</h6>
+                                        <video controls class="w-100 mb-3" id="previewVideo"></video>
+                                        <div class="video-info">
+                                            <p><strong data-i18n="video_upload.dimensions">Dimensions:</strong> <span id="videoDimensions">-</span></p>
+                                            <p><strong data-i18n="video_upload.duration">Duration:</strong> <span id="videoDuration">-</span></p>
+                                            <p><strong data-i18n="video_upload.format">Format:</strong> <span id="videoFormat">-</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logo & CTA Tab -->
+                <div class="tab-pane fade" id="logo" role="tabpanel">
+                    <div class="row g-4">
+                        <!-- Logo Section -->
+                        <div class="col-md-6">
+                            <div class="card bg-secondary border-primary h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0" data-i18n="logo_cta.logo_upload">Upload Logo</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="upload-zone mb-3" id="logoUploadZone">
+                                        <div class="upload-content">
+                                            <i class="fas fa-image fa-2x mb-2 text-primary"></i>
+                                            <input type="file" id="logoFile" accept="image/*" class="d-none">
+                                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('logoFile').click()">
+                                                <span data-i18n="common.upload">Upload</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="logoPreview" class="text-center mb-3 d-none">
+                                        <img id="logoImg" class="img-thumbnail" style="max-width: 200px;">
+                                    </div>
+                                    <div class="logo-settings">
+                                        <div class="mb-3">
+                                            <label class="form-label" data-i18n="logo_cta.position">Position</label>
+                                            <select class="form-select" id="logoPosition">
+                                                <option value="top_left" data-i18n="logo_cta.top_left">Top Left</option>
+                                                <option value="top_right" data-i18n="logo_cta.top_right" selected>Top Right</option>
+                                                <option value="bottom_left" data-i18n="logo_cta.bottom_left">Bottom Left</option>
+                                                <option value="bottom_right" data-i18n="logo_cta.bottom_right">Bottom Right</option>
+                                                <option value="center" data-i18n="logo_cta.center">Center</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-i18n="logo_cta.size">Size (%)</label>
+                                            <input type="range" class="form-range" id="logoSize" min="5" max="30" value="10">
+                                            <div class="text-center"><span id="logoSizeValue">10</span>%</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="form-label" data-i18n="logo_cta.start_time">Start Time (s)</label>
+                                                <input type="number" class="form-control" id="logoStartTime" value="0" min="0" step="0.1">
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label" data-i18n="logo_cta.end_time">End Time (s)</label>
+                                                <input type="number" class="form-control" id="logoEndTime" data-placeholder-i18n="common.entire_video" placeholder="Leave empty for entire video" min="0" step="0.1">
+                                                <div class="form-text" data-i18n="common.full_video_duration">Empty = full video duration</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA Section -->
+                        <div class="col-md-6">
+                            <div class="card bg-secondary border-primary h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0" data-i18n="logo_cta.cta_upload">Upload Call to Action</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="upload-zone mb-3" id="ctaUploadZone">
+                                        <div class="upload-content">
+                                            <i class="fas fa-play fa-2x mb-2 text-primary"></i>
+                                            <input type="file" id="ctaFile" accept="video/*,image/*" class="d-none">
+                                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('ctaFile').click()">
+                                                <span data-i18n="common.upload">Upload</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="ctaPreview" class="text-center mb-3 d-none">
+                                        <div id="ctaPreviewContent"></div>
+                                    </div>
+                                    <div class="cta-settings">
+                                        <div class="mb-3">
+                                            <label class="form-label" data-i18n="logo_cta.position">Position</label>
+                                            <select class="form-select" id="ctaPosition">
+                                                <option value="top_left" data-i18n="logo_cta.top_left">Top Left</option>
+                                                <option value="top_right" data-i18n="logo_cta.top_right">Top Right</option>
+                                                <option value="bottom_left" data-i18n="logo_cta.bottom_left">Bottom Left</option>
+                                                <option value="bottom_right" data-i18n="logo_cta.bottom_right" selected>Bottom Right</option>
+                                                <option value="center" data-i18n="logo_cta.center">Center</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-i18n="logo_cta.size">Size (%)</label>
+                                            <input type="range" class="form-range" id="ctaSize" min="5" max="40" value="15">
+                                            <div class="text-center"><span id="ctaSizeValue">15</span>%</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label" data-i18n="logo_cta.start_time">Start Time (s)</label>
+                                                <input type="number" class="form-control" id="ctaStartTime" value="0" min="0" step="0.1">
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label" data-i18n="logo_cta.end_time">End Time (s)</label>
+                                                <input type="number" class="form-control" id="ctaEndTime" data-placeholder-i18n="common.entire_video" placeholder="Leave empty for entire video" min="0" step="0.1">
+                                                <div class="form-text" data-i18n="common.cta_help_text">If empty, CTA video will loop for the entire main video duration</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="ctaChromaKey">
+                                            <label class="form-check-label" for="ctaChromaKey" data-i18n="logo_cta.chroma_key">Remove Background (Chroma Key)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thumbnail Tab -->
+                <div class="tab-pane fade" id="thumbnail" role="tabpanel">
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h5 class="mb-0" data-i18n="thumbnail.title">Thumbnail Generator</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="autoThumbnail" checked>
+                                            <label class="form-check-label" for="autoThumbnail" data-i18n="thumbnail.auto_generate">Auto Generate Thumbnail</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="thumbnail.text_content">Text Content</label>
+                                        <input type="text" class="form-control" id="thumbnailText" data-placeholder-i18n="common.enter_text_thumbnail" placeholder="Enter text for thumbnail">
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label" data-i18n="thumbnail.font_size">Font Size</label>
+                                            <input type="range" class="form-range" id="thumbnailFontSize" min="24" max="72" value="48">
+                                            <div class="text-center"><span id="thumbnailFontSizeValue">48</span>px</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" data-i18n="thumbnail.text_color">Text Color</label>
+                                            <input type="color" class="form-control form-control-color" id="thumbnailTextColor" value="#ffffff">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="thumbnail.custom_images">Custom Images</label>
+                                        <input type="file" class="form-control" id="thumbnailImages" accept="image/*" multiple>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="thumbnail-preview-container">
+                                        <h6 data-i18n="thumbnail.preview">Thumbnail Preview</h6>
+                                        <div id="thumbnailPreview" class="thumbnail-preview">
+                                            <div class="placeholder-content">
+                                                <i class="fas fa-image fa-3x text-muted mb-2"></i>
+                                                <p class="text-muted" data-i18n="common.preview_will_appear">Preview will appear here</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metadata Tab -->
+                <div class="tab-pane fade" id="metadata" role="tabpanel">
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h5 class="mb-0" data-i18n="metadata.title">SEO Metadata</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="autoMetadata" checked>
+                                            <label class="form-check-label" for="autoMetadata" data-i18n="metadata.auto_generate">Auto Generate from Video</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="metadata.video_title">Video Title</label>
+                                        <input type="text" class="form-control" id="videoTitle" data-placeholder-i18n="common.auto_generated_title" placeholder="Auto-generated or enter custom title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="metadata.description">Description</label>
+                                        <textarea class="form-control" id="videoDescription" rows="4" data-placeholder-i18n="common.auto_generated_description" placeholder="Auto-generated or enter custom description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="metadata.global_words">Global Words (always included)</label>
+                                        <input type="text" class="form-control" id="globalWords" data-placeholder-i18n="common.separate_with_commas" placeholder="Separate with commas">
+                                        <div class="form-text" data-i18n="common.words_included_titles">These words will be included in all video titles</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="metadata.hashtags">Hashtags</label>
+                                        <input type="text" class="form-control" id="videoHashtags" data-placeholder-i18n="common.hashtag_example" placeholder="#hashtag1 #hashtag2">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="metadata.tags">Tags</label>
+                                        <input type="text" class="form-control" id="videoTags" data-placeholder-i18n="common.tags_example" placeholder="tag1, tag2, tag3">
+                                        <div class="form-text" data-i18n="common.separate_tags_commas">Separate tags with commas</div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="videoSpecificOnly">
+                                        <label class="form-check-label" for="videoSpecificOnly" data-i18n="metadata.video_specific">Video Specific Only</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Translation Tab -->
+                <div class="tab-pane fade" id="audio" role="tabpanel">
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h5 class="mb-0" data-i18n="audio_translation.title">Audio Translation</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="audio_translation.original_language">Original Language</label>
+                                        <select class="form-select" id="originalLanguage">
+                                            <option value="auto" data-i18n="languages.auto">Auto Detect</option>
+                                            <option value="en" data-i18n="languages.en">English</option>
+                                            <option value="it" data-i18n="languages.it">Italian</option>
+                                            <option value="es" data-i18n="languages.es">Spanish</option>
+                                            <option value="fr" data-i18n="languages.fr">French</option>
+                                            <option value="de" data-i18n="languages.de">German</option>
+                                            <option value="pt" data-i18n="languages.pt">Portuguese</option>
+                                            <option value="ru" data-i18n="languages.ru">Russian</option>
+                                            <option value="ja" data-i18n="languages.ja">Japanese</option>
+                                            <option value="ko" data-i18n="languages.ko">Korean</option>
+                                            <option value="zh" data-i18n="languages.zh">Chinese Mandarin</option>
+                                            <option value="ar" data-i18n="languages.ar">Arabic</option>
+                                            <option value="hi" data-i18n="languages.hi">Hindi</option>
+                                            <option value="nl" data-i18n="languages.nl">Dutch</option>
+                                            <option value="pl" data-i18n="languages.pl">Polish</option>
+                                            <option value="tr" data-i18n="languages.tr">Turkish</option>
+                                            <option value="sv" data-i18n="languages.sv">Swedish</option>
+                                            <option value="da" data-i18n="languages.da">Danish</option>
+                                            <option value="no" data-i18n="languages.no">Norwegian</option>
+                                            <option value="fi" data-i18n="languages.fi">Finnish</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" data-i18n="audio_translation.target_language">Target Language</label>
+                                        <select class="form-select" id="targetLanguage">
+                                            <option value="en" data-i18n="languages.en">English</option>
+                                            <option value="it" data-i18n="languages.it" selected>Italian</option>
+                                            <option value="es" data-i18n="languages.es">Spanish</option>
+                                            <option value="fr" data-i18n="languages.fr">French</option>
+                                            <option value="de" data-i18n="languages.de">German</option>
+                                            <option value="pt" data-i18n="languages.pt">Portuguese</option>
+                                            <option value="ru" data-i18n="languages.ru">Russian</option>
+                                            <option value="ja" data-i18n="languages.ja">Japanese</option>
+                                            <option value="ko" data-i18n="languages.ko">Korean</option>
+                                            <option value="zh" data-i18n="languages.zh">Chinese Mandarin</option>
+                                            <option value="ar" data-i18n="languages.ar">Arabic</option>
+                                            <option value="hi" data-i18n="languages.hi">Hindi</option>
+                                            <option value="nl" data-i18n="languages.nl">Dutch</option>
+                                            <option value="pl" data-i18n="languages.pl">Polish</option>
+                                            <option value="tr" data-i18n="languages.tr">Turkish</option>
+                                            <option value="sv" data-i18n="languages.sv">Swedish</option>
+                                            <option value="da" data-i18n="languages.da">Danish</option>
+                                            <option value="no" data-i18n="languages.no">Norwegian</option>
+                                            <option value="fi" data-i18n="languages.fi">Finnish</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <h6 data-i18n="audio_translation.voice_settings">Voice Settings</h6>
+                                        <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="replaceAudio" checked>
+                                            <label class="form-check-label" for="replaceAudio" data-i18n="audio_translation.replace_audio">Replace original audio</label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="keepOriginal">
+                                            <label class="form-check-label" for="keepOriginal" data-i18n="audio_translation.keep_original">Keep original audio track</label>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Info:</strong> <span data-i18n="common.audio_translation_info">Audio translation will completely replace the original voice with a synthesized voice in the selected language.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Files Tab -->
+                <div class="tab-pane fade" id="output" role="tabpanel">
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h5 class="mb-0" data-i18n="output.title">Output Files Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-4" data-i18n="output.description">Choose which files to save after processing</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="mb-3" data-i18n="output.video_section">Video Files</h6>
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="saveVideo" checked>
+                                            <label class="form-check-label" for="saveVideo" data-i18n="output.save_video">
+                                                <i class="fas fa-video me-2 text-primary"></i>Final Translated Video (.mp4)
+                                            </label>
+                                        </div>
+                                        <div class="form-text" data-i18n="output.save_video_help">The main output video with translated audio</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="mb-3" data-i18n="output.audio_section">Audio Files</h6>
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="saveTranslatedAudio">
+                                            <label class="form-check-label" for="saveTranslatedAudio" data-i18n="output.save_translated_audio">
+                                                <i class="fas fa-volume-up me-2 text-success"></i>Translated Audio (.mp3)
+                                            </label>
+                                        </div>
+                                        <div class="form-text" data-i18n="output.save_translated_audio_help">Separate audio file with translation</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="mb-3" data-i18n="output.transcript_section">Transcript Files</h6>
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="saveOriginalTranscript" checked>
+                                            <label class="form-check-label" for="saveOriginalTranscript" data-i18n="output.save_original_transcript">
+                                                <i class="fas fa-file-text me-2 text-info"></i>Original Transcript (.txt)
+                                            </label>
+                                        </div>
+                                        <div class="form-text" data-i18n="output.save_original_transcript_help">Text file with original transcription</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="saveTranslatedTranscript" checked>
+                                            <label class="form-check-label" for="saveTranslatedTranscript" data-i18n="output.save_translated_transcript">
+                                                <i class="fas fa-file-text me-2 text-warning"></i>Translated Transcript (.txt)
+                                            </label>
+                                        </div>
+                                        <div class="form-text" data-i18n="output.save_translated_transcript_help">Text file with translated text</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="mb-3" data-i18n="output.subtitle_section">Subtitle Files</h6>
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="saveOriginalSubtitles" checked>
+                                            <label class="form-check-label" for="saveOriginalSubtitles" data-i18n="output.save_original_subtitles">
+                                                <i class="fas fa-closed-captioning me-2 text-info"></i>Original Subtitles (.srt)
+                                            </label>
+                                        </div>
+                                        <div class="form-text" data-i18n="output.save_original_subtitles_help">SRT file with original language</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="saveTranslatedSubtitles" checked>
+                                            <label class="form-check-label" for="saveTranslatedSubtitles" data-i18n="output.save_translated_subtitles">
+                                                <i class="fas fa-closed-captioning me-2 text-warning"></i>Translated Subtitles (.srt)
+                                            </label>
+                                        </div>
+                                        <div class="form-text" data-i18n="output.save_translated_subtitles_help">SRT file with translated subtitles</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info mt-4" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span data-i18n="output.info_message">Files will be saved with intelligent names based on the original filename and target language</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YouTube Tab -->
+                <div class="tab-pane fade" id="youtube" role="tabpanel">
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h5 class="mb-0" data-i18n="youtube.title">YouTube Integration</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="youtubeConnection">
+                                        <div class="text-center mb-4">
+                                            <div id="notConnected">
+                                                <i class="fab fa-youtube fa-4x text-danger mb-3"></i>
+                                                <p class="text-muted" data-i18n="common.connect_youtube_desc">Connect your YouTube channel to upload videos automatically</p>
+                                                <button type="button" class="btn btn-danger" id="connectYouTube">
+                                                    <i class="fab fa-youtube me-2"></i><span data-i18n="youtube.connect">Connect YouTube Channel</span>
+                                                </button>
+                                            </div>
+                                            <div id="connected" class="d-none">
+                                                <i class="fab fa-youtube fa-4x text-success mb-3"></i>
+                                                <p class="text-success"><span data-i18n="youtube.connected">Connected to:</span> <span id="channelName"></span></p>
+                                                <button type="button" class="btn btn-outline-danger" id="disconnectYouTube">
+                                                    <span data-i18n="youtube.disconnect">Disconnect</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="youtubeSettings">
+                                        <h6 data-i18n="youtube.upload_settings">Upload Settings</h6>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-i18n="youtube.privacy">Privacy</label>
+                                            <select class="form-select" id="youtubePrivacy">
+                                                <option value="private" data-i18n="youtube.private" selected>Private</option>
+                                                <option value="unlisted" data-i18n="youtube.unlisted">Unlisted</option>
+                                                <option value="public" data-i18n="youtube.public">Public</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-i18n="youtube.category">Category</label>
+                                            <select class="form-select" id="youtubeCategory">
+                                                <option value="22" selected>People & Blogs</option>
+                                                <option value="1">Film & Animation</option>
+                                                <option value="2">Autos & Vehicles</option>
+                                                <option value="10">Music</option>
+                                                <option value="15">Pets & Animals</option>
+                                                <option value="17">Sports</option>
+                                                <option value="19">Travel & Events</option>
+                                                <option value="20">Gaming</option>
+                                                <option value="23">Comedy</option>
+                                                <option value="24">Entertainment</option>
+                                                <option value="25">News & Politics</option>
+                                                <option value="26">Howto & Style</option>
+                                                <option value="27">Education</option>
+                                                <option value="28">Science & Technology</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Button -->
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <button type="button" class="btn btn-primary btn-lg px-5 me-3" id="startProcessing">
+                <i class="fas fa-play me-2"></i><span data-i18n="process.start">Start Processing</span>
+            </button>
+            <a href="/files" class="btn btn-outline-primary btn-lg px-4">
+                <i class="fas fa-download me-2"></i><span data-i18n="output.view_files">View Generated Files</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

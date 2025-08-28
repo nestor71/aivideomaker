@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block header_title %}Usage Limit Warning{% endblock %}
+
+{% block content %}
+<h2>Hey {{ user_name }}, 📊</h2>
+
+<p>Just a friendly heads up about your {{ app_name }} usage this month.</p>
+
+<div class="alert alert-warning">
+    <strong>⚠️ {{ usage_percent }}% of Monthly Limit Used</strong><br>
+    You've used {{ usage_percent }}% of your monthly video processing minutes on your {{ tier }} plan.
+</div>
+
+{% if tier.lower() == 'free' %}
+<p><strong>Free Plan Limits:</strong></p>
+<ul>
+    <li>📹 10 minutes of video processing per month</li>
+    <li>🎬 Maximum 1-minute video length</li>
+    <li>📱 HD (720p) export quality</li>
+    <li>🔖 Videos include watermark</li>
+</ul>
+
+<p><strong>Running low on minutes?</strong> Consider upgrading to Premium for unlimited processing:</p>
+<ul>
+    <li>🚀 <strong>Unlimited</strong> video processing minutes</li>
+    <li>📹 Videos up to <strong>60 minutes</strong> in length</li>
+    <li>🎯 <strong>4K Ultra HD</strong> export quality</li>
+    <li>🚫 <strong>No watermarks</strong></li>
+    <li>⚡ <strong>Priority processing</strong></li>
+</ul>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/upgrade" class="button">Upgrade to Premium - $9.99/month</a>
+</p>
+{% endif %}
+
+<div class="divider"></div>
+
+<p><strong>💡 Tips to maximize your usage:</strong></p>
+<ul>
+    <li>Keep videos concise and focused</li>
+    <li>Use our AI tools to optimize video length</li>
+    <li>Preview changes before final processing</li>
+    <li>Batch similar edits together</li>
+</ul>
+
+<p>Your usage resets on the first day of each month. You can always check your current usage in your account dashboard.</p>
+
+<p>Thanks for using {{ app_name }}!</p>
+<p>The {{ app_name }} Team</p>
+{% endblock %}

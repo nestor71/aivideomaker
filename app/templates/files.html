@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-secondary border-primary">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0" data-i18n="output.title">Generated Files</h4>
+                    <a href="/" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i><span data-i18n="common.back_to_editor">Back to Editor</span>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div id="outputFilesContainer">
+                        <div class="text-center text-muted" id="noFilesMessage">
+                            <i class="fas fa-folder-open fa-4x mb-4"></i>
+                            <h5 data-i18n="output.no_files_title">No Files Found</h5>
+                            <p data-i18n="output.no_files">No files generated yet. Process a video to see output files here.</p>
+                            <a href="/" class="btn btn-primary mt-3">
+                                <i class="fas fa-video me-2"></i><span data-i18n="output.start_processing">Start Processing Videos</span>
+                            </a>
+                        </div>
+                        <div id="filesList" class="d-none">
+                            <!-- Generated files will appear here -->
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <div>
+                            <button type="button" class="btn btn-primary" id="refreshFiles">
+                                <i class="fas fa-sync me-2"></i><span data-i18n="output.refresh">Refresh</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-warning me-2" id="downloadAllFiles">
+                                <i class="fas fa-download me-2"></i><span data-i18n="output.download_all">Download All</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" id="clearAllFiles">
+                                <i class="fas fa-trash me-2"></i><span data-i18n="output.clear_all">Clear All Files</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- File Template -->
+<template id="fileItemTemplate">
+    <div class="card mb-3 file-item" data-file-path="">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-1 text-center">
+                    <i class="file-icon fas fa-file fa-2x"></i>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="mb-1 file-name"></h6>
+                    <p class="text-muted mb-0">
+                        <span class="file-type badge"></span>
+                        <span class="file-size ms-2"></span>
+                        <span class="file-date ms-2"></span>
+                    </p>
+                </div>
+                <div class="col-md-5 text-end">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary btn-sm preview-btn d-none">
+                            <i class="fas fa-eye me-1"></i><span data-i18n="common.preview">Preview</span>
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm download-btn">
+                            <i class="fas fa-download me-1"></i><span data-i18n="output.download_file">Download</span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm delete-btn">
+                            <i class="fas fa-trash me-1"></i><span data-i18n="output.delete_file">Delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load current language and translations
+    loadFilesPageLanguage();
+    loadGeneratedFiles();
+    
+    // Event listeners
+    document.getElementById('refreshFiles')?.addEventListener('click', loadGeneratedFiles);
+    document.getElementById('clearAllFiles')?.addEventListener('click', clearAllFiles);
+    document.getElementById('downloadAllFiles')?.addEventListener('click', downloadAllFiles);
+});
+
+async function loadFilesPageLanguage() {
+    try {
+        const savedLanguage = localStorage.getItem('aivideo_language') || 'en';
+        const response = await fetch(`/api/translations/${savedLanguage}`);
+        const translations = await response.json();
+        
+        // Update UI with translations
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const translation = getTranslationByKey(key, translations);
+            if (translation) {
+                element.textContent = translation;
+            }
+        });
+    } catch (error) {
+        console.error('Error loading translations:', error);
+    }
+}
+
+function getTranslationByKey(key, translations) {
+    const keys = key.split('.');
+    let translation = translations;
+    
+    for (const k of keys) {
+        if (translation && translation[k]) {
+            translation = translation[k];
+        } else {
+            return null;
+        }
+    }
+    
+    return translation;
+}
+
+async function loadGeneratedFiles() {
+    try {
+        const response = await fetch('/api/files');
+        const data = await response.json();
+        
+        const noFilesMessage = document.getElementById('noFilesMessage');
+        const filesList = document.getElementById('filesList');
+        
+        if (data.files && data.files.length > 0) {
+            noFilesMessage.classList.add('d-none');
+            filesList.classList.remove('d-none');
+            renderFilesList(data.files);
+        } else {
+            noFilesMessage.classList.remove('d-none');
+            filesList.classList.add('d-none');
+        }
+    } catch (error) {
+        console.error('Error loading files:', error);
+    }
+}
+
+function renderFilesList(files) {
+    const filesList = document.getElementById('filesList');
+    const template = document.getElementById('fileItemTemplate');
+    
+    filesList.innerHTML = '';
+    
+    files.forEach(file => {
+        const fileItem = template.content.cloneNode(true);
+        
+        // Set file data
+        fileItem.querySelector('.file-item').setAttribute('data-file-path', file.path);
+        fileItem.querySelector('.file-name').textContent = file.name;
+        fileItem.querySelector('.file-size').textContent = formatFileSize(file.size);
+        fileItem.querySelector('.file-date').textContent = formatDate(file.created);
+        
+        // Set file type and icon
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const typeInfo = getFileTypeInfo(fileExtension);
+        fileItem.querySelector('.file-type').textContent = typeInfo.label;
+        fileItem.querySelector('.file-type').className = `badge ${typeInfo.class}`;
+        fileItem.querySelector('.file-icon').className = `fas ${typeInfo.icon} fa-2x`;
+        
+        // Show preview button for videos and images
+        if (['mp4', 'avi', 'mov', 'jpg', 'png', 'gif'].includes(fileExtension)) {
+            fileItem.querySelector('.preview-btn').classList.remove('d-none');
+        }
+        
+        // Add event listeners
+        fileItem.querySelector('.download-btn').addEventListener('click', () => downloadFile(file.path));
+        fileItem.querySelector('.delete-btn').addEventListener('click', () => deleteFile(file.path, file.name));
+        
+        const previewBtn = fileItem.querySelector('.preview-btn');
+        if (!previewBtn.classList.contains('d-none')) {
+            previewBtn.addEventListener('click', () => previewFile(file.path, file.name));
+        }
+        
+        filesList.appendChild(fileItem);
+    });
+}
+
+function getFileTypeInfo(extension) {
+    const types = {
+        'mp4': { label: 'Video', class: 'bg-primary', icon: 'fa-film' },
+        'avi': { label: 'Video', class: 'bg-primary', icon: 'fa-film' },
+        'mov': { label: 'Video', class: 'bg-primary', icon: 'fa-film' },
+        'txt': { label: 'Transcript', class: 'bg-info', icon: 'fa-file-alt' },
+        'srt': { label: 'Subtitles', class: 'bg-warning', icon: 'fa-closed-captioning' },
+        'jpg': { label: 'Thumbnail', class: 'bg-success', icon: 'fa-image' },
+        'png': { label: 'Thumbnail', class: 'bg-success', icon: 'fa-image' },
+        'mp3': { label: 'Audio', class: 'bg-secondary', icon: 'fa-music' }
+    };
+    
+    return types[extension] || { label: 'File', class: 'bg-light text-dark', icon: 'fa-file' };
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString();
+}
+
+async function downloadFile(filePath) {
+    try {
+        const link = document.createElement('a');
+        link.href = `/api/files/download?path=${encodeURIComponent(filePath)}`;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error downloading file:', error);
+        alert('Error downloading file');
+    }
+}
+
+async function deleteFile(filePath, fileName) {
+    if (!confirm(`Are you sure you want to delete "${fileName}"?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/files/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: filePath })
+        });
+        
+        if (response.ok) {
+            loadGeneratedFiles(); // Refresh the list
+        } else {
+            alert('Error deleting file');
+        }
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        alert('Error deleting file');
+    }
+}
+
+async function clearAllFiles() {
+    if (!confirm('Are you sure you want to delete all generated files?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/files/clear', {
+            method: 'POST'
+        });
+        
+        if (response.ok) {
+            loadGeneratedFiles(); // Refresh the list
+        } else {
+            alert('Error clearing files');
+        }
+    } catch (error) {
+        console.error('Error clearing files:', error);
+        alert('Error clearing files');
+    }
+}
+
+async function downloadAllFiles() {
+    try {
+        const link = document.createElement('a');
+        link.href = '/api/files/download-all';
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error downloading all files:', error);
+        alert('Error downloading all files');
+    }
+}
+
+function previewFile(filePath, fileName) {
+    // Simple preview - open in new window/tab
+    window.open(`/api/files/preview?path=${encodeURIComponent(filePath)}`, '_blank');
+}
+</script>
+{% endblock %}

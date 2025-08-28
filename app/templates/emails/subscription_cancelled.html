@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block header_title %}Subscription Cancelled{% endblock %}
+
+{% block content %}
+<h2>Hi {{ user_name }}, 📝</h2>
+
+<p>We've processed your request to cancel your {{ app_name }} Premium subscription.</p>
+
+<div class="alert alert-info">
+    <strong>📅 Subscription Cancelled</strong><br>
+    Your Premium features will remain active until {{ end_date }}.
+</div>
+
+<p><strong>What happens next:</strong></p>
+<ul>
+    <li>✅ You'll keep Premium features until {{ end_date }}</li>
+    <li>🔄 No more automatic billing</li>
+    <li>📧 We'll send a reminder before your access expires</li>
+    <li>🔄 Your account will automatically switch to Free tier</li>
+</ul>
+
+<p><strong>Free tier includes:</strong></p>
+<ul>
+    <li>📹 10 minutes of video processing per month</li>
+    <li>🎬 Maximum 1-minute video length</li>
+    <li>📱 HD (720p) export quality</li>
+    <li>🔖 Videos include watermark</li>
+</ul>
+
+<div class="divider"></div>
+
+<p><strong>Changed your mind?</strong></p>
+<p>You can reactivate your Premium subscription anytime before {{ end_date }} without losing any features.</p>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/upgrade" class="button">Reactivate Premium</a>
+</p>
+
+<p><strong>💬 We'd love your feedback</strong></p>
+<p>Help us improve by sharing why you cancelled. Your feedback is valuable to us and helps make {{ app_name }} better for everyone.</p>
+
+<p>Thank you for being part of the {{ app_name }} community. We hope to see you back soon!</p>
+
+<p>Best regards,</p>
+<p>The {{ app_name }} Team</p>
+{% endblock %}

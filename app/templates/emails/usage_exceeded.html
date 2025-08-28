@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block header_title %}Monthly Limit Reached{% endblock %}
+
+{% block content %}
+<h2>Hi {{ user_name }}, 🚫</h2>
+
+<p>You've reached your monthly video processing limit on your {{ tier }} plan.</p>
+
+<div class="alert alert-warning">
+    <strong>🚫 Monthly Limit Exceeded</strong><br>
+    You've used all available video processing minutes for this month on your {{ tier }} plan.
+</div>
+
+{% if tier.lower() == 'free' %}
+<p><strong>What this means:</strong></p>
+<ul>
+    <li>🔒 Video processing is temporarily paused</li>
+    <li>📅 Your limit resets on the 1st of next month</li>
+    <li>👀 You can still browse and plan your next videos</li>
+    <li>⬆️ Or upgrade to Premium for immediate access</li>
+</ul>
+
+<p><strong>Ready to keep creating?</strong> Upgrade to Premium and get:</p>
+<ul>
+    <li>🚀 <strong>Unlimited</strong> video processing minutes</li>
+    <li>📹 Videos up to <strong>60 minutes</strong> in length</li>
+    <li>🎯 <strong>4K Ultra HD</strong> export quality</li>
+    <li>🚫 <strong>No watermarks</strong></li>
+    <li>⚡ <strong>Priority processing</strong></li>
+    <li>💬 <strong>Premium support</strong></li>
+</ul>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/upgrade" class="button">Upgrade to Premium - $9.99/month</a>
+</p>
+
+<div class="divider"></div>
+
+<p><strong>🗓️ When do limits reset?</strong></p>
+<p>Your video processing minutes reset on the 1st day of every month at midnight UTC. Mark your calendar!</p>
+
+<p><strong>📧 Want a reminder?</strong></p>
+<p>We'll send you a notification when your new monthly allowance is available.</p>
+{% else %}
+<p>It looks like there might be an issue with your Premium subscription. Please contact our support team for assistance.</p>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/support" class="button">Contact Support</a>
+</p>
+{% endif %}
+
+<p>Thank you for being a valued {{ app_name }} user!</p>
+<p>The {{ app_name }} Team</p>
+{% endblock %}

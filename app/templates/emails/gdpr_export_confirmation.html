@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Data Export Request Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 0 0 5px 5px;
+        }
+        .notice {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Data Export Request Confirmed</h1>
+    </div>
+    
+    <div class="content">
+        <p>Dear {{ user_name }},</p>
+        
+        <p>We have received your request to export your personal data from {{ app_name }} on {{ request_date }}.</p>
+        
+        <div class="notice">
+            <h3>What happens next?</h3>
+            <ul>
+                <li>We will process your request {{ processing_time }}</li>
+                <li>You will receive another email when your data export is ready</li>
+                <li>The export will include all the data categories you requested</li>
+                <li>You will have 7 days to download your data once it's ready</li>
+            </ul>
+        </div>
+        
+        <h3>Your Rights Under GDPR</h3>
+        <p>This request is being processed under Article 20 of the General Data Protection Regulation (GDPR), which grants you the right to data portability.</p>
+        
+        <p>If you have any questions about this request or your data rights, please don't hesitate to contact us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+        
+        <p>Best regards,<br>
+        The {{ app_name }} Privacy Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; {{ year }} {{ app_name }}. All rights reserved.</p>
+        <p>This email was sent regarding your data export request. Please do not reply to this automated message.</p>
+    </div>
+</body>
+</html>

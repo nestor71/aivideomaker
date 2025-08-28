@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block header_title %}Welcome to {{ app_name }}!{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ user_name }}! 🎉</h2>
+
+<p>Thank you for joining {{ app_name }}, the AI-powered video editing platform that makes creating stunning videos effortless.</p>
+
+<p>With your free account, you can:</p>
+<ul>
+    <li>✨ Process up to 10 minutes of video per month</li>
+    <li>🎬 Create videos up to 1 minute in length</li>
+    <li>📱 Export in HD (720p) quality</li>
+    <li>🤖 Access our AI-powered editing features</li>
+</ul>
+
+{% if verification_link %}
+<div class="alert alert-info">
+    <strong>📧 Verify your email address</strong><br>
+    Please verify your email address to secure your account and unlock all features.
+</div>
+
+<p style="text-align: center;">
+    <a href="{{ verification_link }}" class="button">Verify Email Address</a>
+</p>
+{% endif %}
+
+<p>Ready to upgrade? Our Premium plan offers:</p>
+<ul>
+    <li>🚀 Unlimited video processing minutes</li>
+    <li>📹 Videos up to 60 minutes in length</li>
+    <li>🎯 4K Ultra HD export quality</li>
+    <li>🚫 No watermarks</li>
+    <li>⚡ Priority processing</li>
+    <li>💬 Premium support</li>
+</ul>
+
+<div class="divider"></div>
+
+<p><strong>Need help getting started?</strong></p>
+<p>Visit our documentation or contact our support team. We're here to help you create amazing videos!</p>
+
+<p>Happy video making!</p>
+<p>The {{ app_name }} Team</p>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block header_title %}Payment Failed{% endblock %}
+
+{% block content %}
+<h2>Hi {{ user_name }}, 💳</h2>
+
+<p>We had trouble processing your payment for your {{ app_name }} Premium subscription.</p>
+
+<div class="alert alert-danger">
+    <strong>❌ Payment Failed</strong><br>
+    Amount: ${{ "%.2f"|format(amount) }} USD<br>
+    Your Premium access may be interrupted soon.
+</div>
+
+<p><strong>What you need to do:</strong></p>
+<ol>
+    <li>🔄 <strong>Update your payment method</strong> in your account settings</li>
+    <li>✅ <strong>Retry the payment</strong> to restore full access</li>
+    <li>📧 <strong>Check your email</strong> for payment confirmation</li>
+</ol>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="/billing" class="button">Update Payment Method</a>
+</p>
+
+<p><strong>🕒 Timeline:</strong></p>
+<ul>
+    <li><strong>Today:</strong> Payment attempt failed</li>
+    <li><strong>Day 3:</strong> We'll retry payment automatically</li>
+    <li><strong>Day 7:</strong> Final payment retry attempt</li>
+    <li><strong>Day 10:</strong> Account downgraded to Free tier</li>
+</ul>
+
+<div class="divider"></div>
+
+<p><strong>Common reasons for payment failure:</strong></p>
+<ul>
+    <li>💳 Expired credit card</li>
+    <li>🚫 Insufficient funds</li>
+    <li>🏦 Bank security restrictions</li>
+    <li>📝 Incorrect billing information</li>
+</ul>
+
+<p><strong>Need help?</strong></p>
+<p>Our support team is here to help resolve any payment issues. Contact us and we'll get you back up and running quickly.</p>
+
+<p style="text-align: center; margin: 20px 0;">
+    <a href="/support" class="button" style="background-color: #28a745;">Contact Support</a>
+</p>
+
+<p>Thank you for your understanding!</p>
+<p>The {{ app_name }} Team</p>
+{% endblock %}

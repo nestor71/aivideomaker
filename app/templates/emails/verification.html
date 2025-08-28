@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block header_title %}Verify Your Account{% endblock %}
+
+{% block content %}
+<h2>Hi {{ user_name }}, 👋</h2>
+
+<p>Thank you for signing up for {{ app_name }}! To complete your registration and secure your account, please verify your email address.</p>
+
+<div class="alert alert-info">
+    <strong>🔐 Email Verification Required</strong><br>
+    Click the button below to verify your email address and activate your account.
+</div>
+
+<p style="text-align: center;">
+    <a href="{{ verification_link }}" class="button">Verify Email Address</a>
+</p>
+
+<p><strong>Why verify your email?</strong></p>
+<ul>
+    <li>🔒 Secure your account</li>
+    <li>📧 Receive important updates</li>
+    <li>🔄 Enable password recovery</li>
+    <li>🎁 Access special promotions</li>
+</ul>
+
+<div class="divider"></div>
+
+<p><strong>Didn't request this?</strong></p>
+<p>If you didn't create an account with {{ app_name }}, you can safely ignore this email.</p>
+
+<p style="font-size: 14px; color: #666;">
+    <strong>Note:</strong> This verification link will expire in 24 hours for security reasons.
+</p>
+{% endblock %}

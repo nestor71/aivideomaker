@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}YouTube Connected - AIVideoMaker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-secondary border-success">
+                <div class="card-header text-center bg-success">
+                    <h3 class="mb-0 text-white">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Successfully Connected!
+                    </h3>
+                </div>
+                <div class="card-body text-center">
+                    <i class="fab fa-youtube fa-5x text-danger mb-3"></i>
+                    <h4 class="text-success mb-3">YouTube Channel Connected</h4>
+                    <p class="lead">Your YouTube channel "{{ channel_name }}" has been successfully connected to AIVideoMaker.</p>
+                    <p class="text-muted">You can now upload videos directly to your YouTube channel from the application.</p>
+                    <hr>
+                    <button class="btn btn-primary btn-lg" onclick="window.close()">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Return to AIVideoMaker
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-close window after a few seconds
+setTimeout(function() {
+    if (window.opener) {
+        window.opener.location.reload();
+        window.close();
+    }
+}, 3000);
+</script>
+{% endblock %}

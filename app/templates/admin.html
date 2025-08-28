@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - AIVideoMaker{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Admin Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 fw-bold text-primary">
+                        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                    </h1>
+                    <p class="text-muted">System overview and user management</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary me-2" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                    <button class="btn btn-success" onclick="exportData()">
+                        <i class="fas fa-download me-1"></i>Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-secondary border-primary">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h3 class="text-light" id="totalUsers">0</h3>
+                    <p class="text-muted mb-0">Total Users</p>
+                    <small class="text-success" id="userGrowth">+0%</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-secondary border-warning">
+                <div class="card-body text-center">
+                    <i class="fas fa-crown fa-3x text-warning mb-3"></i>
+                    <h3 class="text-light" id="premiumUsers">0</h3>
+                    <p class="text-muted mb-0">Premium Users</p>
+                    <small class="text-info" id="conversionRate">0%</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-secondary border-success">
+                <div class="card-body text-center">
+                    <i class="fas fa-dollar-sign fa-3x text-success mb-3"></i>
+                    <h3 class="text-light" id="monthlyRevenue">$0</h3>
+                    <p class="text-muted mb-0">Monthly Revenue</p>
+                    <small class="text-muted">USD</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-secondary border-info">
+                <div class="card-body text-center">
+                    <i class="fas fa-video fa-3x text-info mb-3"></i>
+                    <h3 class="text-light" id="monthlyVideos">0</h3>
+                    <p class="text-muted mb-0">Monthly Videos</p>
+                    <small class="text-muted">Processed</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="card bg-secondary border-primary">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Daily Usage Analytics
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="usageChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card bg-secondary border-primary">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>User Tier Distribution
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="tierChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Health -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-secondary border-primary">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-heartbeat me-2"></i>System Health
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-database fa-2x me-3" id="dbIcon"></i>
+                                <div>
+                                    <h6 class="mb-0">Database</h6>
+                                    <span class="badge" id="dbStatus">Unknown</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-memory fa-2x me-3" id="redisIcon"></i>
+                                <div>
+                                    <h6 class="mb-0">Redis</h6>
+                                    <span class="badge" id="redisStatus">Unknown</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-users-cog fa-2x me-3 text-info"></i>
+                                <div>
+                                    <h6 class="mb-0">Active Sessions</h6>
+                                    <span class="text-light" id="activeSessions">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                                <div>
+                                    <h6 class="mb-0">Recent Errors</h6>
+                                    <span class="text-light" id="recentErrors">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-secondary border-primary">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-users me-2"></i>User Management
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <select class="form-select form-select-sm" id="tierFilter">
+                            <option value="">All Tiers</option>
+                            <option value="free">Free</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                        <select class="form-select form-select-sm" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="verified">Verified</option>
+                            <option value="unverified">Unverified</option>
+                        </select>
+                        <input type="text" class="form-control form-control-sm" 
+                               placeholder="Search users..." id="userSearch">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Tier</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Last Login</th>
+                                    <th>Usage</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav>
+                        <ul class="pagination justify-content-center" id="usersPagination">
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-dark border-primary">
+            <div class="modal-header border-primary">
+                <h5 class="modal-title text-light">
+                    <i class="fas fa-user me-2"></i>User Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- User Info -->
+                    <div class="col-md-4">
+                        <div class="card bg-secondary border-primary">
+                            <div class="card-header">
+                                <h6 class="mb-0">User Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="userDetailsInfo">
+                                    <!-- User details will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Usage Stats -->
+                    <div class="col-md-4">
+                        <div class="card bg-secondary border-primary">
+                            <div class="card-header">
+                                <h6 class="mb-0">Usage Statistics</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="userUsageStats">
+                                    <!-- Usage stats will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="col-md-4">
+                        <div class="card bg-secondary border-primary">
+                            <div class="card-header">
+                                <h6 class="mb-0">Recent Activity</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="userRecentActivity" style="max-height: 300px; overflow-y: auto;">
+                                    <!-- Recent activity will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment History -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="card bg-secondary border-primary">
+                            <div class="card-header">
+                                <h6 class="mb-0">Payment History</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-dark table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userPaymentHistory">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/admin.js"></script>
+{% endblock %}

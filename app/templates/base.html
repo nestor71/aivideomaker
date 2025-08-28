@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AIVideoMaker{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-video me-2"></i>
+                AIVideoMaker
+            </a>
+            <div class="navbar-nav ms-auto d-flex align-items-center">
+                <!-- User Menu (when authenticated) -->
+                <div id="userMenu" class="nav-item dropdown me-3" style="display: none;">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                        <img id="userAvatar" src="" class="rounded-circle me-2" width="32" height="32" style="display: none;">
+                        <i id="userIcon" class="fas fa-user-circle me-2"></i>
+                        <span id="userName">User</span>
+                        <span id="userTier" class="badge bg-secondary ms-2">Free</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><h6 class="dropdown-header">Account</h6></li>
+                        <li><a class="dropdown-item" href="#" onclick="showDashboard()">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showBilling()">
+                            <i class="fas fa-credit-card me-2"></i>Billing
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showProfile()">
+                            <i class="fas fa-user-cog me-2"></i>Profile
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="upgradeToPremium()" id="upgradeLink">
+                            <i class="fas fa-crown me-2 text-warning"></i>Upgrade to Premium
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a></li>
+                    </ul>
+                </div>
+                
+                <!-- Auth Buttons (when not authenticated) -->
+                <div id="authButtons" class="d-flex me-3">
+                    <button class="btn btn-outline-light btn-sm me-2" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt me-1"></i>Login
+                    </button>
+                    <button class="btn btn-primary btn-sm" onclick="showSignupModal()">
+                        <i class="fas fa-user-plus me-1"></i>Sign Up
+                    </button>
+                </div>
+                
+                <!-- Language Selector -->
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <span id="current-flag">🇺🇸</span>
+                        <span id="current-lang" class="ms-2">English</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            🇺🇸 English
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('it')">
+                            🇮🇹 Italiano
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Processing Modal -->
+    <div class="modal fade" id="processingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark border-primary">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-light" data-i18n="process.confirm_title">Confirm Processing</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-light" data-i18n="process.confirm_message">The following features will be applied to your video:</p>
+                    <ul id="selectedFeatures" class="list-group list-group-flush bg-transparent">
+                    </ul>
+                </div>
+                <div class="modal-footer border-primary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="common.cancel">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmProcess" data-i18n="process.start">Start Processing</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Modal -->
+    <div class="modal fade" id="progressModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark border-primary">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-light" data-i18n="process.processing">Processing...</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-light" id="progressText">Processing your video...</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark border-primary">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-light">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- OAuth Buttons -->
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="btn btn-outline-light" onclick="loginWithOAuth('google')">
+                            <i class="fab fa-google me-2"></i>Continue with Google
+                        </button>
+                        <button class="btn btn-outline-light" onclick="loginWithOAuth('microsoft')">
+                            <i class="fab fa-microsoft me-2"></i>Continue with Microsoft
+                        </button>
+                        <button class="btn btn-outline-light" onclick="loginWithOAuth('apple')">
+                            <i class="fab fa-apple me-2"></i>Continue with Apple
+                        </button>
+                    </div>
+                    
+                    <div class="text-center mb-3">
+                        <span class="text-muted">or</span>
+                    </div>
+                    
+                    <!-- Email/Password Form -->
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control bg-secondary border-primary text-light" 
+                                   id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control bg-secondary border-primary text-light" 
+                                   id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-primary" onclick="showForgotPassword()">Forgot password?</a>
+                    </div>
+                </div>
+                <div class="modal-footer border-primary justify-content-center">
+                    <span class="text-muted">Don't have an account?</span>
+                    <a href="#" class="text-primary ms-1" onclick="switchToSignup()">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark border-primary">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-light">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- OAuth Buttons -->
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="btn btn-outline-light" onclick="signupWithOAuth('google')">
+                            <i class="fab fa-google me-2"></i>Sign up with Google
+                        </button>
+                        <button class="btn btn-outline-light" onclick="signupWithOAuth('microsoft')">
+                            <i class="fab fa-microsoft me-2"></i>Sign up with Microsoft
+                        </button>
+                        <button class="btn btn-outline-light" onclick="signupWithOAuth('apple')">
+                            <i class="fab fa-apple me-2"></i>Sign up with Apple
+                        </button>
+                    </div>
+                    
+                    <div class="text-center mb-3">
+                        <span class="text-muted">or</span>
+                    </div>
+                    
+                    <!-- Registration Form -->
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label for="signupName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control bg-secondary border-primary text-light" 
+                                   id="signupName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control bg-secondary border-primary text-light" 
+                                   id="signupEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control bg-secondary border-primary text-light" 
+                                   id="signupPassword" required minlength="8">
+                            <div class="form-text text-muted">
+                                Must contain at least 8 characters with uppercase, lowercase, and number.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupPasswordConfirm" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control bg-secondary border-primary text-light" 
+                                   id="signupPasswordConfirm" required>
+                        </div>
+                        
+                        <!-- GDPR Consents -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="agreeTos" required>
+                                <label class="form-check-label" for="agreeTos">
+                                    I agree to the <a href="#" class="text-primary">Terms of Service</a>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="agreePrivacy" required>
+                                <label class="form-check-label" for="agreePrivacy">
+                                    I agree to the <a href="#" class="text-primary">Privacy Policy</a>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="agreeMarketing">
+                                <label class="form-check-label" for="agreeMarketing">
+                                    I want to receive marketing emails (optional)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Create Account</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-primary justify-content-center">
+                    <span class="text-muted">Already have an account?</span>
+                    <a href="#" class="text-primary ms-1" onclick="switchToLogin()">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard Modal -->
+    <div class="modal fade" id="dashboardModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content bg-dark border-primary">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-light">
+                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Usage Statistics -->
+                        <div class="col-md-6">
+                            <div class="card bg-secondary border-primary mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-chart-pie me-2"></i>Monthly Usage
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Video Minutes</span>
+                                            <span id="usageMinutes">0 / 10 min</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary" role="progressbar" 
+                                                 id="usageProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <h6 id="videosProcessed">0</h6>
+                                            <small class="text-muted">Videos Processed</small>
+                                        </div>
+                                        <div class="col">
+                                            <h6 id="daysRemaining">0</h6>
+                                            <small class="text-muted">Days Left</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Subscription Info -->
+                        <div class="col-md-6">
+                            <div class="card bg-secondary border-primary mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-crown me-2"></i>Subscription
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Current Plan:</span>
+                                        <span class="badge bg-secondary" id="currentPlan">Free</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span>Next Billing:</span>
+                                        <span class="text-muted" id="nextBilling">No billing</span>
+                                    </div>
+                                    <div class="d-grid" id="upgradeButton">
+                                        <button class="btn btn-warning" onclick="upgradeToPremium()">
+                                            <i class="fas fa-rocket me-2"></i>Upgrade to Premium
+                                        </button>
+                                    </div>
+                                    <div class="d-grid" id="manageButton" style="display: none;">
+                                        <button class="btn btn-outline-primary" onclick="showBilling()">
+                                            <i class="fas fa-cog me-2"></i>Manage Subscription
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="card bg-secondary border-primary">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-history me-2"></i>Recent Activity
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentActivity">
+                                <p class="text-muted text-center">No recent activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade Modal -->
+    <div class="modal fade" id="upgradeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark border-primary">
+                <div class="modal-header border-primary">
+                    <h5 class="modal-title text-light">
+                        <i class="fas fa-crown me-2 text-warning"></i>Upgrade to Premium
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Free Tier -->
+                        <div class="col-md-6">
+                            <div class="card bg-secondary border-secondary h-100">
+                                <div class="card-header text-center">
+                                    <h5>Free Tier</h5>
+                                    <h3>$0<small class="text-muted">/month</small></h3>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check text-success me-2"></i>10 minutes/month</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>1-minute max duration</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>720p quality</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>Basic AI features</li>
+                                        <li><i class="fas fa-times text-danger me-2"></i>Watermark included</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Premium Tier -->
+                        <div class="col-md-6">
+                            <div class="card bg-primary border-warning h-100">
+                                <div class="card-header text-center">
+                                    <h5><i class="fas fa-crown text-warning me-2"></i>Premium</h5>
+                                    <h3>$9.99<small class="text-muted">/month</small></h3>
+                                    <small class="text-muted">or $99/year (save 17%)</small>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check text-warning me-2"></i>Unlimited video minutes</li>
+                                        <li><i class="fas fa-check text-warning me-2"></i>Unlimited duration</li>
+                                        <li><i class="fas fa-check text-warning me-2"></i>Up to 4K quality</li>
+                                        <li><i class="fas fa-check text-warning me-2"></i>Advanced AI features</li>
+                                        <li><i class="fas fa-check text-warning me-2"></i>No watermark</li>
+                                        <li><i class="fas fa-check text-warning me-2"></i>Priority processing</li>
+                                        <li><i class="fas fa-check text-warning me-2"></i>5 concurrent uploads</li>
+                                    </ul>
+                                    <div class="d-grid mt-3">
+                                        <button class="btn btn-warning" onclick="startSubscription('premium')">
+                                            <i class="fas fa-rocket me-2"></i>Upgrade Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Required Modal -->
+    <div class="modal fade" id="authRequiredModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark border-warning">
+                <div class="modal-header border-warning">
+                    <h5 class="modal-title text-warning">
+                        <i class="fas fa-user-lock me-2"></i>Sign Up Required
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-video fa-3x text-primary mb-3"></i>
+                    <h5>Ready to process your video?</h5>
+                    <p class="text-muted">Sign up for free to start processing your videos with AI-powered tools.</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="showSignupFromAuth()">
+                            <i class="fas fa-user-plus me-2"></i>Sign Up Free
+                        </button>
+                        <button class="btn btn-outline-light" onclick="showLoginFromAuth()">
+                            Already have an account? Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/auth.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

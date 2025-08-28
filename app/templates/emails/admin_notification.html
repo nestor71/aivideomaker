@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block header_title %}Admin Notification{% endblock %}
+
+{% block content %}
+<h2>{{ subject }}</h2>
+
+<div class="alert alert-{{ severity }}">
+    <strong>🔔 System Notification</strong><br>
+    Severity: {{ severity.upper() }}
+</div>
+
+<p><strong>Details:</strong></p>
+<p>{{ content }}</p>
+
+{% if user_id %}
+<p><strong>Related User ID:</strong> {{ user_id }}</p>
+{% endif %}
+
+<div class="divider"></div>
+
+<p><strong>📊 System Information:</strong></p>
+<ul>
+    <li><strong>Timestamp:</strong> {{ timestamp }}</li>
+    <li><strong>Application:</strong> {{ app_name }}</li>
+    <li><strong>Severity:</strong> {{ severity.upper() }}</li>
+</ul>
+
+{% if severity == 'danger' or severity == 'warning' %}
+<div class="alert alert-danger">
+    <strong>⚠️ Action Required</strong><br>
+    This notification requires immediate attention. Please review and take appropriate action.
+</div>
+{% endif %}
+
+<p>This is an automated notification from {{ app_name }}.</p>
+{% endblock %}

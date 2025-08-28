@@ -1,0 +1,82 @@
+# Web Framework
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+
+# File handling
+python-multipart>=0.0.6
+aiofiles>=23.0.0
+
+# Template engine
+jinja2>=3.1.2
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+authlib>=1.3.0
+httpx>=0.25.0
+
+# OAuth Providers
+google-auth>=2.23.0
+msal>=1.25.0
+
+# Payments & Subscriptions
+stripe>=7.0.0
+
+# Caching & Queue System
+redis>=5.0.0
+celery[redis]>=5.3.0
+
+# Rate Limiting
+slowapi>=0.1.9
+
+# Video processing
+moviepy>=1.0.3
+opencv-python>=4.8.0
+pillow>=10.0.0
+
+# YouTube integration
+pytube>=15.0.0
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.0
+google-auth-oauthlib>=1.0.0
+
+# AI services - FREE alternatives (using same versions as Textify)
+openai-whisper==20250625
+torch==2.2.2
+torchaudio==2.2.2
+torchvision==0.17.2
+deep-translator>=1.11.4
+gtts>=2.4.0
+
+# Optional: OpenAI (paid)
+openai>=1.3.0
+
+# Audio processing
+SpeechRecognition>=3.8.1
+pydub>=0.25.1
+
+# Data processing
+numpy>=1.20.0
+requests>=2.25.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.12.0
+psycopg2-binary>=2.9.0
+
+# Data validation
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+email-validator>=2.0.0
+
+# Additional dependencies
+starlette>=0.27.0
+
+# File validation
+python-magic>=0.4.27
+
+# Testing dependencies
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+fakeredis>=2.18.0
+httpx>=0.24.0

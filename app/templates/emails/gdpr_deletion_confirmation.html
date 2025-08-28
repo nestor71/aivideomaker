@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Data Deletion Request Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: #dc3545;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 0 0 5px 5px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .notice {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .important {
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚠️ Data Deletion Request Confirmed</h1>
+    </div>
+    
+    <div class="content">
+        <p>Dear {{ user_name }},</p>
+        
+        <p>We have received your request to delete your personal data from {{ app_name }} on {{ request_date }}.</p>
+        
+        <div class="notice">
+            <h3 class="important">IMPORTANT: Grace Period</h3>
+            <p>Your data deletion has been scheduled with a <strong>{{ grace_period }} grace period</strong>. This means:</p>
+            <ul>
+                <li>Your data will not be immediately deleted</li>
+                <li>You can cancel this request during the grace period</li>
+                <li>Your account will remain accessible during this time</li>
+                <li>After the grace period, deletion will be irreversible</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <h3>What will be deleted?</h3>
+            <p>The following data categories will be permanently deleted:</p>
+            <ul>
+                <li>Your profile information</li>
+                <li>Account settings and preferences</li>
+                <li>Video processing history</li>
+                <li>Communication preferences</li>
+            </ul>
+            
+            <h4>Data that will be retained:</h4>
+            <ul>
+                <li>Payment records (required by law for 7 years)</li>
+                <li>Anonymized usage statistics</li>
+                <li>Legal compliance records</li>
+            </ul>
+        </div>
+        
+        <h3>Your Rights Under GDPR</h3>
+        <p>This request is being processed under Article 17 of the General Data Protection Regulation (GDPR), which grants you the right to erasure ("right to be forgotten").</p>
+        
+        <p class="important">To cancel this deletion request, please contact us immediately at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+        
+        <p>If you have any questions about this process or your data rights, please don't hesitate to contact our privacy team.</p>
+        
+        <p>Best regards,<br>
+        The {{ app_name }} Privacy Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; {{ year }} {{ app_name }}. All rights reserved.</p>
+        <p>This email was sent regarding your data deletion request. Please contact us if you wish to cancel.</p>
+    </div>
+</body>
+</html>
