@@ -25,6 +25,7 @@ pillow>=10.0.0
 
 # Essential video processing
 moviepy>=1.0.3
+imageio-ffmpeg>=0.6.0
 
 # Redis for caching (essential for database.base.py)
 redis>=5.0.0

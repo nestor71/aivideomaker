@@ -3,7 +3,8 @@ import uuid
 import shutil
 from pathlib import Path
 from fastapi import UploadFile, HTTPException
-from moviepy.editor import VideoFileClip
+# Lazy import for moviepy to avoid startup issues
+# from moviepy.editor import VideoFileClip
 from PIL import Image
 import mimetypes
 from app.core.validators import file_validator
@@ -36,7 +37,13 @@ class FileHandler:
         
         # Get video info
         try:
-            clip = VideoFileClip(str(file_path))
+            # Lazy import moviepy when needed
+            try:
+                from moviepy.editor import VideoFileClip
+                clip = VideoFileClip(str(file_path))
+            except ImportError:
+                logger.warning("moviepy not available, video processing disabled")
+                raise HTTPException(status_code=503, detail="Video processing temporarily unavailable")
             video_info = {
                 "url": f"/static/uploads/{self.session_id}/{filename}",
                 "filename": filename,
@@ -108,7 +115,13 @@ class FileHandler:
         
         # Get video info
         try:
-            clip = VideoFileClip(str(file_path))
+            # Lazy import moviepy when needed
+            try:
+                from moviepy.editor import VideoFileClip
+                clip = VideoFileClip(str(file_path))
+            except ImportError:
+                logger.warning("moviepy not available, video processing disabled")
+                raise HTTPException(status_code=503, detail="Video processing temporarily unavailable")
             cta_info = {
                 "url": f"/static/uploads/{self.session_id}/{filename}",
                 "filename": filename,
