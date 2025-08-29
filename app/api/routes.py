@@ -17,7 +17,8 @@ from app.core.config import settings
 from app.core.i18n import i18n
 from app.models.settings import UserSettings
 from app.services.file_handler import FileHandler
-from app.services.video_processor import VideoProcessor
+# Temporarily disabled for startup issues
+# from app.services.video_processor import VideoProcessor
 from app.services.youtube_service import YouTubeService
 from app.database.base import get_session
 from app.services.free_ai_service import free_ai_service
@@ -203,7 +204,9 @@ async def process_video(
         raise HTTPException(status_code=400, detail="No session found")
     
     try:
-        processor = VideoProcessor(session_id)
+        # Temporarily disabled - video processing unavailable
+        raise HTTPException(status_code=503, detail="Video processing temporarily unavailable during deployment")
+        # processor = VideoProcessor(session_id)
         
         # Pass tier information to processor
         processing_options = {

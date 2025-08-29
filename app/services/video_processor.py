@@ -3,11 +3,12 @@ import json
 import uuid
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Union
-import cv2
-import numpy as np
-from moviepy.editor import (
-    VideoFileClip, ImageClip, CompositeVideoClip, 
-    TextClip, ColorClip, AudioFileClip
+# Lazy imports to avoid startup issues
+# import cv2
+# import numpy as np
+# from moviepy.editor import (
+#     VideoFileClip, ImageClip, CompositeVideoClip, 
+#     TextClip, ColorClip, AudioFileClip
 )
 from PIL import Image, ImageDraw, ImageFont
 from app.core.config import settings
