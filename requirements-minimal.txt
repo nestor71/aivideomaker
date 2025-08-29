@@ -13,6 +13,7 @@ jinja2>=3.1.2
 python-jose[cryptography]>=3.3.0
 passlib[bcrypt]>=1.7.4
 httpx>=0.25.0
+authlib>=1.3.0
 
 # Google OAuth & APIs (lightweight)
 google-auth>=2.23.0
