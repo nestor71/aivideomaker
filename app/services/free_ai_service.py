@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, Optional, List
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+from fastapi import HTTPException
 
 try:
     import whisper
@@ -26,7 +27,8 @@ except ImportError:
     gTTS = None
     HAS_GTTS = False
 
-from moviepy.editor import VideoFileClip
+# Lazy import for startup issues
+# from moviepy.editor import VideoFileClip
 from app.core.logger import logger
 from app.core.config import settings
 
@@ -78,7 +80,13 @@ class FreeAIService:
                 temp_audio_path = temp_audio.name
             
             try:
-                clip = VideoFileClip(str(video_path))
+                # Lazy import moviepy when needed
+                try:
+                    from moviepy.editor import VideoFileClip
+                    clip = VideoFileClip(str(video_path))
+                except ImportError:
+                    logger.warning("moviepy not available, video processing disabled")
+                    raise HTTPException(status_code=503, detail="Video processing temporarily unavailable")
                 logger.info(f"Original video duration: {clip.duration}s")
                 if clip.audio is None:
                     raise Exception("No audio track found in video")
