@@ -23,6 +23,12 @@ slowapi>=0.1.9
 # Basic image processing
 pillow>=10.0.0
 
+# Essential video processing
+moviepy>=1.0.3
+
+# Redis for caching (essential for database.base.py)
+redis>=5.0.0
+
 # Data processing
 numpy>=1.20.0
 requests>=2.25.0
