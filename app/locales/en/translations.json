@@ -202,6 +202,22 @@
     "privacy_policy": "Privacy Policy",
     "or": "or"
   },
+  "footer": {
+    "subtitle": "AI-powered video editing and YouTube automation",
+    "copyright": "© 2025 AIVideoMaker. All rights reserved.",
+    "legal": "Legal",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy", 
+    "privacy_settings": "Privacy Settings",
+    "connect": "Connect",
+    "support": "Support",
+    "admin": "Admin",
+    "made_with": "Made with",
+    "using_ai": "using AI technology",
+    "version": "Version",
+    "gdpr_compliant": "GDPR Compliant",
+    "secure": "Secure"
+  },
   "output": {
     "title": "Output Files Settings",
     "description": "Choose which files to save after processing",

@@ -209,6 +209,22 @@
     "back_to_home": "Torna alla Home",
     "privacy_settings": "Impostazioni Privacy"
   },
+  "footer": {
+    "subtitle": "Editing video e automazione YouTube basati sull'AI",
+    "copyright": "© 2025 AIVideoMaker. Tutti i diritti riservati.",
+    "legal": "Legale",
+    "terms_of_service": "Termini di Servizio",
+    "privacy_policy": "Privacy Policy",
+    "privacy_settings": "Impostazioni Privacy",
+    "connect": "Contatti",
+    "support": "Supporto",
+    "admin": "Admin",
+    "made_with": "Realizzato con",
+    "using_ai": "utilizzando tecnologia AI",
+    "version": "Versione",
+    "gdpr_compliant": "Conforme GDPR",
+    "secure": "Sicuro"
+  },
   "output": {
     "title": "Impostazioni File di Output",
     "description": "Scegli quali file salvare dopo l'elaborazione",
