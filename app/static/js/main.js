@@ -27,7 +27,10 @@ async function loadLanguage(lang) {
         window.translations = translations; // Update global reference
         currentLanguage = lang;
         window.currentLanguage = currentLanguage; // Update global reference
+        
+        // Apply translations immediately and again after a small delay
         updateUI();
+        setTimeout(() => updateUI(), 50);
         
         // Update language display with flag
         const flagElement = document.getElementById('current-flag');
