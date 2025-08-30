@@ -297,10 +297,12 @@ const authManager = new AuthManager();
 
 // Modal functions
 function showLoginModal() {
+    updateUI(); // Apply current translations
     new bootstrap.Modal(document.getElementById('loginModal')).show();
 }
 
 function showSignupModal() {
+    updateUI(); // Apply current translations
     new bootstrap.Modal(document.getElementById('signupModal')).show();
 }
 
