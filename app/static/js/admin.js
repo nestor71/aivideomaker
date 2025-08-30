@@ -555,13 +555,28 @@ function exportData() {
 
 // Initialize admin dashboard when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Always initialize admin dashboard when on admin page
     if (window.location.pathname.includes('/admin')) {
-        // Small delay to ensure DOM is ready
+        // Check authentication with better error handling
         setTimeout(() => {
-            if (typeof AdminDashboard !== 'undefined') {
-                window.adminDashboard = new AdminDashboard();
-            }
+            // First try to load user data
+            fetch('/api/auth/check-auth')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.user && (data.user.role === 'ADMIN' || data.user.role === 'admin')) {
+                        // User is admin, initialize dashboard
+                        if (typeof AdminDashboard !== 'undefined') {
+                            window.adminDashboard = new AdminDashboard();
+                        }
+                    } else {
+                        // Not admin, redirect
+                        window.location.href = '/?error=access_denied';
+                    }
+                })
+                .catch(error => {
+                    console.error('Auth check failed:', error);
+                    // On error, redirect to login
+                    window.location.href = '/?error=auth_failed';
+                });
         }, 100);
     }
 });

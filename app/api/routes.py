@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, File, UploadFile
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, StreamingResponse, RedirectResponse
 from sqlalchemy.orm import Session
 import json
 import os
@@ -16,6 +16,8 @@ from datetime import datetime
 from app.core.config import settings
 from app.core.i18n import i18n
 from app.models.settings import UserSettings
+from app.auth.dependencies import get_current_user_or_anonymous
+from app.database.models import User, UserRole
 from app.services.file_handler import FileHandler
 # Temporarily disabled for startup issues
 # from app.services.video_processor import VideoProcessor
@@ -38,7 +40,10 @@ async def files_page(request: Request):
     return templates.TemplateResponse("files.html", {"request": request})
 
 @router.get("/admin", response_class=HTMLResponse)
-async def admin_page(request: Request):
+async def admin_page(request: Request, current_user: Optional[User] = Depends(get_current_user_or_anonymous)):
+    # Check if user is admin
+    if not current_user or current_user.role != UserRole.ADMIN:
+        return RedirectResponse(url="/?error=access_denied", status_code=302)
     return templates.TemplateResponse("admin.html", {"request": request})
 
 
