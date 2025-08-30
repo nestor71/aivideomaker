@@ -41,6 +41,54 @@ async def files_page(request: Request):
 async def admin_page(request: Request):
     return templates.TemplateResponse("admin.html", {"request": request})
 
+
+@router.post("/setup-admin-role")
+async def setup_admin_role_temp(db: Session = Depends(get_session)):
+    """
+    TEMPORARY: Set admin role for configured admin emails.
+    Remove this endpoint after use.
+    """
+    from app.core.config import settings
+    from app.database.models import UserRole, User
+    
+    try:
+        admin_emails = settings.ADMIN_EMAIL_ADDRESSES
+        if not admin_emails:
+            return {"error": "No admin emails configured", "admin_emails": admin_emails}
+        
+        # Find users with admin emails
+        admin_users = db.query(User).filter(User.email.in_(admin_emails)).all()
+        
+        if not admin_users:
+            return {
+                "error": "No users found with admin emails", 
+                "admin_emails": admin_emails,
+                "suggestion": "Register an account with one of these emails first"
+            }
+        
+        updated_count = 0
+        updated_users = []
+        
+        for user in admin_users:
+            if user.role != UserRole.ADMIN:
+                user.role = UserRole.ADMIN
+                updated_count += 1
+                updated_users.append({"email": user.email, "id": user.id})
+        
+        if updated_count > 0:
+            db.commit()
+        
+        return {
+            "success": True,
+            "message": f"Updated {updated_count} user(s) to admin role",
+            "updated_users": updated_users,
+            "admin_emails": admin_emails
+        }
+        
+    except Exception as e:
+        db.rollback()
+        return {"error": str(e), "success": False}
+
 @router.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):
     return templates.TemplateResponse("terms.html", {"request": request})
