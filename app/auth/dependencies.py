@@ -103,7 +103,8 @@ async def require_admin(
     current_user: User = Depends(get_current_active_user)
 ) -> User:
     """Require admin privileges."""
-    if current_user.role.value != "admin":
+    role_value = current_user.role.value.lower() if hasattr(current_user.role, 'value') else str(current_user.role).lower()
+    if role_value != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin privileges required"
