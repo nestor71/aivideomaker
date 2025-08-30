@@ -29,16 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="display-6 fw-bold text-primary">
-                        <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                        <i class="fas fa-tachometer-alt me-2"></i><span data-i18n="auth.admin_dashboard">Admin Dashboard</span>
                     </h1>
-                    <p class="text-muted">System overview and user management</p>
+                    <p class="text-muted" data-i18n="auth.system_overview">System overview and user management</p>
                 </div>
                 <div>
                     <button class="btn btn-outline-primary me-2" onclick="refreshDashboard()">
-                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                        <i class="fas fa-sync-alt me-1"></i><span data-i18n="auth.refresh">Refresh</span>
                     </button>
                     <button class="btn btn-success" onclick="exportData()">
-                        <i class="fas fa-download me-1"></i>Export Data
+                        <i class="fas fa-download me-1"></i><span data-i18n="auth.export_data">Export Data</span>
                     </button>
                 </div>
             </div>
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="card-body text-center">
                     <i class="fas fa-users fa-3x text-primary mb-3"></i>
                     <h3 class="text-light" id="totalUsers">0</h3>
-                    <p class="text-muted mb-0">Total Users</p>
+                    <p class="text-muted mb-0" data-i18n="auth.total_users">Total Users</p>
                     <small class="text-success" id="userGrowth">+0%</small>
                 </div>
             </div>
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="card-body text-center">
                     <i class="fas fa-crown fa-3x text-warning mb-3"></i>
                     <h3 class="text-light" id="premiumUsers">0</h3>
-                    <p class="text-muted mb-0">Premium Users</p>
+                    <p class="text-muted mb-0" data-i18n="auth.premium_users">Premium Users</p>
                     <small class="text-info" id="conversionRate">0%</small>
                 </div>
             </div>
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="card-body text-center">
                     <i class="fas fa-dollar-sign fa-3x text-success mb-3"></i>
                     <h3 class="text-light" id="monthlyRevenue">$0</h3>
-                    <p class="text-muted mb-0">Monthly Revenue</p>
+                    <p class="text-muted mb-0" data-i18n="auth.monthly_revenue">Monthly Revenue</p>
                     <small class="text-muted">USD</small>
                 </div>
             </div>
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="card-body text-center">
                     <i class="fas fa-video fa-3x text-info mb-3"></i>
                     <h3 class="text-light" id="monthlyVideos">0</h3>
-                    <p class="text-muted mb-0">Monthly Videos</p>
+                    <p class="text-muted mb-0" data-i18n="auth.monthly_videos">Monthly Videos</p>
                     <small class="text-muted">Processed</small>
                 </div>
             </div>
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="card bg-secondary border-primary">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="fas fa-heartbeat me-2"></i>System Health
+                        <i class="fas fa-heartbeat me-2"></i><span data-i18n="auth.system_health">System Health</span>
                     </h5>
                 </div>
                 <div class="card-body">
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="card bg-secondary border-primary">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="fas fa-users me-2"></i>User Management
+                        <i class="fas fa-users me-2"></i><span data-i18n="auth.user_management">User Management</span>
                     </h5>
                     <div class="d-flex gap-2">
                         <select class="form-select form-select-sm" id="tierFilter">

@@ -205,7 +205,29 @@
     "ready_to_process": "Pronto per elaborare il tuo video?",
     "sign_up_free_description": "Registrati gratuitamente per iniziare ad elaborare i tuoi video con strumenti basati sull'AI.",
     "sign_up_free": "Registrati Gratis",
-    "already_have_account_sign_in": "Hai già un account? Accedi"
+    "already_have_account_sign_in": "Hai già un account? Accedi",
+    
+    "account": "Account",
+    "dashboard": "Dashboard", 
+    "billing": "Fatturazione",
+    "profile": "Profilo",
+    "upgrade_to_premium": "Aggiorna a Premium",
+    "logout": "Esci",
+    
+    "admin_dashboard": "Pannello Amministratore",
+    "system_overview": "Panoramica sistema e gestione utenti",
+    "refresh": "Aggiorna",
+    "export_data": "Esporta Dati",
+    "total_users": "Utenti Totali",
+    "premium_users": "Utenti Premium",
+    "monthly_revenue": "Ricavi Mensili",
+    "monthly_videos": "Video Mensili",
+    "user_management": "Gestione Utenti",
+    "system_health": "Stato Sistema",
+    "database": "Database",
+    "redis": "Redis",
+    "active_sessions": "Sessioni Attive",
+    "recent_errors": "Errori Recenti"
   },
   "legal": {
     "terms_title": "Termini di Servizio",

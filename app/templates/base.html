@@ -25,23 +25,23 @@
                         <span id="userTier" class="badge bg-secondary ms-2">Free</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header">Account</h6></li>
+                        <li><h6 class="dropdown-header" data-i18n="auth.account">Account</h6></li>
                         <li><a class="dropdown-item" href="#" onclick="showDashboard()">
-                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            <i class="fas fa-tachometer-alt me-2"></i><span data-i18n="auth.dashboard">Dashboard</span>
                         </a></li>
                         <li><a class="dropdown-item" href="#" onclick="showBilling()">
-                            <i class="fas fa-credit-card me-2"></i>Billing
+                            <i class="fas fa-credit-card me-2"></i><span data-i18n="auth.billing">Billing</span>
                         </a></li>
                         <li><a class="dropdown-item" href="#" onclick="showProfile()">
-                            <i class="fas fa-user-cog me-2"></i>Profile
+                            <i class="fas fa-user-cog me-2"></i><span data-i18n="auth.profile">Profile</span>
                         </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" onclick="upgradeToPremium()" id="upgradeLink">
-                            <i class="fas fa-crown me-2 text-warning"></i>Upgrade to Premium
+                            <i class="fas fa-crown me-2 text-warning"></i><span data-i18n="auth.upgrade_to_premium">Upgrade to Premium</span>
                         </a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            <i class="fas fa-sign-out-alt me-2"></i><span data-i18n="auth.logout">Logout</span>
                         </a></li>
                     </ul>
                 </div>
