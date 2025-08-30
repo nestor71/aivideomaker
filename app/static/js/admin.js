@@ -557,7 +557,8 @@ function exportData() {
 document.addEventListener('DOMContentLoaded', function() {
     // Check if user is admin
     if (typeof authManager !== 'undefined' && authManager.currentUser) {
-        if (authManager.currentUser.role === 'admin') {
+        const userRole = (authManager.currentUser.role || '').toLowerCase();
+        if (userRole === 'admin' || authManager.currentUser.role === 'ADMIN') {
             window.adminDashboard = new AdminDashboard();
         } else {
             // Redirect non-admin users
