@@ -301,14 +301,8 @@ function showLoginModal() {
     
     // Apply translations when modal is shown
     document.getElementById('loginModal').addEventListener('shown.bs.modal', function() {
-        console.log('Login modal shown, applying translations...');
-        console.log('updateUI function available:', typeof updateUI);
-        console.log('Current translations:', window.translations);
         if (typeof updateUI === 'function') {
             updateUI(); // Apply current translations
-            console.log('UpdateUI called for login modal');
-        } else {
-            console.error('updateUI function not available!');
         }
     }, { once: true });
     
@@ -320,14 +314,8 @@ function showSignupModal() {
     
     // Apply translations when modal is shown
     document.getElementById('signupModal').addEventListener('shown.bs.modal', function() {
-        console.log('Signup modal shown, applying translations...');
-        console.log('updateUI function available:', typeof updateUI);
-        console.log('Current translations:', window.translations);
         if (typeof updateUI === 'function') {
             updateUI(); // Apply current translations
-            console.log('UpdateUI called for signup modal');
-        } else {
-            console.error('updateUI function not available!');
         }
     }, { once: true });
     

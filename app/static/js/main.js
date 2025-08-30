@@ -57,11 +57,9 @@ function changeLanguage(lang) {
 
 // Update UI with current language  
 function updateUI() {
-    console.log('UpdateUI called, current translations:', translations);
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         const translation = getTranslation(key);
-        console.log(`Translating ${key} to:`, translation);
         if (translation) {
             element.textContent = translation;
         }
