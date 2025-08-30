@@ -3,6 +3,10 @@ let currentLanguage = 'en';
 let translations = {};
 let userSettings = {};
 
+// Make variables globally accessible
+window.currentLanguage = currentLanguage;
+window.translations = translations;
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     // Load saved language from localStorage
@@ -20,7 +24,9 @@ async function loadLanguage(lang) {
     try {
         const response = await fetch(`/api/translations/${lang}`);
         translations = await response.json();
+        window.translations = translations; // Update global reference
         currentLanguage = lang;
+        window.currentLanguage = currentLanguage; // Update global reference
         updateUI();
         
         // Update language display with flag
@@ -49,11 +55,13 @@ function changeLanguage(lang) {
     saveUserSettings();
 }
 
-// Update UI with current language
+// Update UI with current language  
 function updateUI() {
+    console.log('UpdateUI called, current translations:', translations);
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         const translation = getTranslation(key);
+        console.log(`Translating ${key} to:`, translation);
         if (translation) {
             element.textContent = translation;
         }
@@ -68,6 +76,9 @@ function updateUI() {
         }
     });
 }
+
+// Make updateUI globally accessible
+window.updateUI = updateUI;
 
 // Get translation by key
 function getTranslation(key) {
