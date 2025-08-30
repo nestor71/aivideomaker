@@ -49,6 +49,14 @@ async def terms_page(request: Request):
 async def privacy_page(request: Request):
     return templates.TemplateResponse("privacy.html", {"request": request})
 
+@router.get("/terms-it", response_class=HTMLResponse)
+async def terms_page_it(request: Request):
+    return templates.TemplateResponse("terms_it.html", {"request": request})
+
+@router.get("/privacy-it", response_class=HTMLResponse)
+async def privacy_page_it(request: Request):
+    return templates.TemplateResponse("privacy_it.html", {"request": request})
+
 @router.get("/api/health")
 async def health_check():
     """Health check endpoint for monitoring."""

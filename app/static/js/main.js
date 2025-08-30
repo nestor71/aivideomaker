@@ -127,6 +127,17 @@ async function saveUserSettings() {
     }
 }
 
+// Functions to open legal pages in the correct language
+function openTerms() {
+    const url = currentLanguage === 'it' ? '/terms-it' : '/terms';
+    window.open(url, '_blank');
+}
+
+function openPrivacy() {
+    const url = currentLanguage === 'it' ? '/privacy-it' : '/privacy';
+    window.open(url, '_blank');
+}
+
 // Get default settings
 function getDefaultSettings() {
     return {
