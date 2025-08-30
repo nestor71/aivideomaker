@@ -16,6 +16,57 @@ from app.core.logger import logger
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 
+@router.post("/setup-admin-roles")
+async def setup_admin_roles(db: Session = Depends(get_session)):
+    """
+    TEMPORARY ROUTE: Set admin role for users with admin email addresses.
+    This is a one-time setup route that should be removed after use.
+    """
+    from app.core.config import settings
+    from app.database.models import UserRole
+    
+    try:
+        admin_emails = settings.ADMIN_EMAIL_ADDRESSES
+        if not admin_emails:
+            raise HTTPException(
+                status_code=400, 
+                detail="No admin email addresses configured"
+            )
+        
+        # Find users with admin emails
+        admin_users = db.query(User).filter(User.email.in_(admin_emails)).all()
+        
+        if not admin_users:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No users found with admin emails: {admin_emails}"
+            )
+        
+        updated_count = 0
+        updated_users = []
+        
+        for user in admin_users:
+            if user.role != UserRole.ADMIN:
+                user.role = UserRole.ADMIN
+                updated_count += 1
+                updated_users.append(user.email)
+                logger.info(f"Set admin role for user: {user.email}")
+        
+        if updated_count > 0:
+            db.commit()
+        
+        return {
+            "message": f"Successfully updated {updated_count} user(s) to admin role",
+            "updated_users": updated_users,
+            "admin_emails": admin_emails
+        }
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error setting admin roles: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/dashboard/stats")
 async def get_dashboard_stats(
     admin_user: User = Depends(require_admin),
