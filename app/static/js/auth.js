@@ -297,13 +297,29 @@ const authManager = new AuthManager();
 
 // Modal functions
 function showLoginModal() {
-    updateUI(); // Apply current translations
-    new bootstrap.Modal(document.getElementById('loginModal')).show();
+    const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+    
+    // Apply translations when modal is shown
+    document.getElementById('loginModal').addEventListener('shown.bs.modal', function() {
+        if (typeof updateUI === 'function') {
+            updateUI(); // Apply current translations
+        }
+    }, { once: true });
+    
+    modal.show();
 }
 
 function showSignupModal() {
-    updateUI(); // Apply current translations
-    new bootstrap.Modal(document.getElementById('signupModal')).show();
+    const modal = new bootstrap.Modal(document.getElementById('signupModal'));
+    
+    // Apply translations when modal is shown
+    document.getElementById('signupModal').addEventListener('shown.bs.modal', function() {
+        if (typeof updateUI === 'function') {
+            updateUI(); // Apply current translations
+        }
+    }, { once: true });
+    
+    modal.show();
 }
 
 function showDashboard() {
