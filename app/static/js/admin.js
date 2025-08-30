@@ -555,17 +555,13 @@ function exportData() {
 
 // Initialize admin dashboard when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if user is admin
-    if (typeof authManager !== 'undefined' && authManager.currentUser) {
-        const userRole = (authManager.currentUser.role || '').toLowerCase();
-        if (userRole === 'admin' || authManager.currentUser.role === 'ADMIN') {
-            window.adminDashboard = new AdminDashboard();
-        } else {
-            // Redirect non-admin users
-            window.location.href = '/';
-        }
-    } else {
-        // Redirect unauthenticated users
-        window.location.href = '/';
+    // Always initialize admin dashboard when on admin page
+    if (window.location.pathname.includes('/admin')) {
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            if (typeof AdminDashboard !== 'undefined') {
+                window.adminDashboard = new AdminDashboard();
+            }
+        }, 100);
     }
 });
