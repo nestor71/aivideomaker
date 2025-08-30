@@ -15,6 +15,7 @@ from app.core.config import settings
 from app.core.logger import logger
 from app.models.settings import UserSettings
 from app.services.free_ai_service import free_ai_service
+from app.services.elevenlabs_service import elevenlabs_service
 from app.services.usage_monitor import usage_monitor
 from app.database.models import User, UsageRecord
 from app.database.base import get_session

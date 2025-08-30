@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 from fastapi import UploadFile, HTTPException
 # Lazy import for moviepy to avoid startup issues
-# from moviepy.editor import VideoFileClip
+# from moviepy.video.io.VideoFileClip import VideoFileClip
 from PIL import Image
 import mimetypes
 from app.core.validators import file_validator
@@ -39,7 +39,7 @@ class FileHandler:
         try:
             # Lazy import moviepy when needed
             try:
-                from moviepy.editor import VideoFileClip
+                from moviepy.video.io.VideoFileClip import VideoFileClip
                 clip = VideoFileClip(str(file_path))
             except ImportError:
                 logger.warning("moviepy not available, video processing disabled")
@@ -117,7 +117,7 @@ class FileHandler:
         try:
             # Lazy import moviepy when needed
             try:
-                from moviepy.editor import VideoFileClip
+                from moviepy.video.io.VideoFileClip import VideoFileClip
                 clip = VideoFileClip(str(file_path))
             except ImportError:
                 logger.warning("moviepy not available, video processing disabled")

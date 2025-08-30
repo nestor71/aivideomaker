@@ -200,7 +200,12 @@
     "marketing_emails": "Desidero ricevere email di marketing (opzionale)",
     "terms_of_service": "Termini di Servizio",
     "privacy_policy": "Privacy Policy",
-    "or": "oppure"
+    "or": "oppure",
+    "sign_up_required": "Registrazione Necessaria",
+    "ready_to_process": "Pronto per elaborare il tuo video?",
+    "sign_up_free_description": "Registrati gratuitamente per iniziare ad elaborare i tuoi video con strumenti basati sull'AI.",
+    "sign_up_free": "Registrati Gratis",
+    "already_have_account_sign_in": "Hai già un account? Accedi"
   },
   "legal": {
     "terms_title": "Termini di Servizio",

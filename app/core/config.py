@@ -43,6 +43,11 @@ class Settings(BaseSettings):
     # AI Services
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     
+    # ElevenLabs (Premium Voice Cloning + Lip Sync)
+    ELEVENLABS_API_KEY: str = os.getenv("ELEVENLABS_API_KEY", "")
+    ELEVENLABS_VOICE_ID: str = os.getenv("ELEVENLABS_VOICE_ID", "")  # Default voice
+    ELEVENLABS_MODEL_ID: str = os.getenv("ELEVENLABS_MODEL_ID", "eleven_multilingual_v2")
+    
     # OAuth Providers
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
     GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
@@ -65,7 +70,18 @@ class Settings(BaseSettings):
     EMAIL_USE_TLS: bool = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
     
     # Admin Configuration
-    ADMIN_EMAIL_ADDRESSES: List[str] = os.getenv("ADMIN_EMAIL_ADDRESSES", "").split(",") if os.getenv("ADMIN_EMAIL_ADDRESSES") else []
+    ADMIN_EMAIL_ADDRESSES: List[str] = Field(default_factory=list)
+    
+    @validator('ADMIN_EMAIL_ADDRESSES', pre=True, always=True)
+    def parse_admin_emails(cls, v):
+        if isinstance(v, str):
+            if not v:
+                return []
+            # Split by comma and strip whitespace
+            return [email.strip() for email in v.split(',') if email.strip()]
+        elif isinstance(v, list):
+            return v
+        return []
     
     # YouTube (legacy)
     YOUTUBE_CLIENT_ID: str = os.getenv("YOUTUBE_CLIENT_ID", "")
@@ -76,25 +92,31 @@ class Settings(BaseSettings):
     STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
     STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
     
-    # Subscription pricing (in cents)
-    PREMIUM_MONTHLY_PRICE: int = 999  # $9.99
-    PREMIUM_YEARLY_PRICE: int = 9900  # $99.00
+    # Subscription pricing (in cents) - STRATEGIA ELEVENLABS
+    PREMIUM_MONTHLY_PRICE: int = 1999  # €19.99
+    PREMIUM_YEARLY_PRICE: int = 19900  # €199.00 (2 mesi gratis)
     
     # Rate limiting
     RATE_LIMIT_PER_MINUTE: int = 60
     RATE_LIMIT_BURST: int = 10
     
-    # Free tier limits
-    FREE_TIER_MONTHLY_MINUTES: float = 10.0
-    FREE_TIER_MAX_DURATION_SECONDS: int = 60
+    # Free tier limits (STRATEGIA SICURA)
+    FREE_TIER_MONTHLY_VIDEOS: int = int(os.getenv("FREE_TIER_MONTHLY_VIDEOS", "2"))
+    FREE_TIER_MONTHLY_MINUTES: float = 1.0
+    FREE_TIER_MAX_DURATION_SECONDS: int = 30
     FREE_TIER_MAX_QUALITY: str = "720p"
     FREE_TIER_CONCURRENT_UPLOADS: int = 1
+    FREE_TIER_WATERMARK: bool = True
     
-    # Premium tier limits  
-    PREMIUM_TIER_MONTHLY_MINUTES: float = -1  # Unlimited
-    PREMIUM_TIER_MAX_DURATION_SECONDS: int = -1  # Unlimited
-    PREMIUM_TIER_MAX_QUALITY: str = "4K"
-    PREMIUM_TIER_CONCURRENT_UPLOADS: int = 5
+    # Premium tier limits (STRATEGIA ELEVENLABS)
+    PREMIUM_TIER_MONTHLY_VIDEOS: int = 15  # 15 video al mese
+    PREMIUM_TIER_MONTHLY_MINUTES: float = 75.0  # 15 × 5 min
+    PREMIUM_TIER_MAX_DURATION_SECONDS: int = 300  # 5 minuti max
+    PREMIUM_TIER_MAX_QUALITY: str = "1080p"
+    PREMIUM_TIER_CONCURRENT_UPLOADS: int = 3
+    PREMIUM_TIER_WATERMARK: bool = False
+    PREMIUM_TIER_ELEVENLABS: bool = True  # ElevenLabs + Lip Sync
+    PREMIUM_TIER_VOICE_CLONING: bool = True
     
     # Email settings (for notifications)
     SMTP_HOST: str = os.getenv("SMTP_HOST", "")
@@ -118,5 +140,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "ignore"
 
 settings = Settings()
