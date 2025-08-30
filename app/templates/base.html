@@ -49,10 +49,10 @@
                 <!-- Auth Buttons (when not authenticated) -->
                 <div id="authButtons" class="d-flex me-3">
                     <button class="btn btn-outline-light btn-sm me-2" onclick="showLoginModal()">
-                        <i class="fas fa-sign-in-alt me-1"></i>Login
+                        <i class="fas fa-sign-in-alt me-1"></i><span data-i18n="auth.sign_in">Login</span>
                     </button>
                     <button class="btn btn-primary btn-sm" onclick="showSignupModal()">
-                        <i class="fas fa-user-plus me-1"></i>Sign Up
+                        <i class="fas fa-user-plus me-1"></i><span data-i18n="auth.sign_up">Sign Up</span>
                     </button>
                 </div>
                 
@@ -126,7 +126,7 @@
             <div class="modal-content bg-dark border-primary">
                 <div class="modal-header border-primary">
                     <h5 class="modal-title text-light">
-                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        <i class="fas fa-sign-in-alt me-2"></i><span data-i18n="auth.sign_in">Sign In</span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -134,50 +134,50 @@
                     <!-- OAuth Buttons -->
                     <div class="d-grid gap-2 mb-3">
                         <button class="btn btn-outline-light" onclick="loginWithOAuth('google')">
-                            <i class="fab fa-google me-2"></i>Continue with Google
+                            <i class="fab fa-google me-2"></i><span data-i18n="auth.sign_in_with_google">Continue with Google</span>
                         </button>
                         <button class="btn btn-outline-light" onclick="loginWithOAuth('microsoft')">
-                            <i class="fab fa-microsoft me-2"></i>Continue with Microsoft
+                            <i class="fab fa-microsoft me-2"></i><span data-i18n="auth.sign_in_with_microsoft">Continue with Microsoft</span>
                         </button>
                         <button class="btn btn-outline-light" onclick="loginWithOAuth('apple')">
-                            <i class="fab fa-apple me-2"></i>Continue with Apple
+                            <i class="fab fa-apple me-2"></i><span data-i18n="auth.sign_in_with_apple">Continue with Apple</span>
                         </button>
                     </div>
                     
                     <div class="text-center mb-3">
-                        <span class="text-muted">or</span>
+                        <span class="text-muted" data-i18n="auth.or">or</span>
                     </div>
                     
                     <!-- Email/Password Form -->
                     <form id="loginForm">
                         <div class="mb-3">
-                            <label for="loginEmail" class="form-label">Email</label>
+                            <label for="loginEmail" class="form-label" data-i18n="auth.email">Email</label>
                             <input type="email" class="form-control bg-secondary border-primary text-light" 
                                    id="loginEmail" required>
                         </div>
                         <div class="mb-3">
-                            <label for="loginPassword" class="form-label">Password</label>
+                            <label for="loginPassword" class="form-label" data-i18n="auth.password">Password</label>
                             <input type="password" class="form-control bg-secondary border-primary text-light" 
                                    id="loginPassword" required>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">
+                            <label class="form-check-label" for="rememberMe" data-i18n="auth.remember_me">
                                 Remember me
                             </label>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Sign In</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="auth.sign_in">Sign In</button>
                         </div>
                     </form>
                     
                     <div class="text-center mt-3">
-                        <a href="#" class="text-primary" onclick="showForgotPassword()">Forgot password?</a>
+                        <a href="#" class="text-primary" onclick="showForgotPassword()" data-i18n="auth.forgot_password">Forgot password?</a>
                     </div>
                 </div>
                 <div class="modal-footer border-primary justify-content-center">
-                    <span class="text-muted">Don't have an account?</span>
-                    <a href="#" class="text-primary ms-1" onclick="switchToSignup()">Sign up</a>
+                    <span class="text-muted" data-i18n="auth.dont_have_account">Don't have an account?</span>
+                    <a href="#" class="text-primary ms-1" onclick="switchToSignup()" data-i18n="auth.sign_up">Sign up</a>
                 </div>
             </div>
         </div>
@@ -189,7 +189,7 @@
             <div class="modal-content bg-dark border-primary">
                 <div class="modal-header border-primary">
                     <h5 class="modal-title text-light">
-                        <i class="fas fa-user-plus me-2"></i>Create Account
+                        <i class="fas fa-user-plus me-2"></i><span data-i18n="auth.create_account">Create Account</span>
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -197,42 +197,42 @@
                     <!-- OAuth Buttons -->
                     <div class="d-grid gap-2 mb-3">
                         <button class="btn btn-outline-light" onclick="signupWithOAuth('google')">
-                            <i class="fab fa-google me-2"></i>Sign up with Google
+                            <i class="fab fa-google me-2"></i><span data-i18n="auth.sign_up_with_google">Sign up with Google</span>
                         </button>
                         <button class="btn btn-outline-light" onclick="signupWithOAuth('microsoft')">
-                            <i class="fab fa-microsoft me-2"></i>Sign up with Microsoft
+                            <i class="fab fa-microsoft me-2"></i><span data-i18n="auth.sign_up_with_microsoft">Sign up with Microsoft</span>
                         </button>
                         <button class="btn btn-outline-light" onclick="signupWithOAuth('apple')">
-                            <i class="fab fa-apple me-2"></i>Sign up with Apple
+                            <i class="fab fa-apple me-2"></i><span data-i18n="auth.sign_up_with_apple">Sign up with Apple</span>
                         </button>
                     </div>
                     
                     <div class="text-center mb-3">
-                        <span class="text-muted">or</span>
+                        <span class="text-muted" data-i18n="auth.or">or</span>
                     </div>
                     
                     <!-- Registration Form -->
                     <form id="signupForm">
                         <div class="mb-3">
-                            <label for="signupName" class="form-label">Full Name</label>
+                            <label for="signupName" class="form-label" data-i18n="auth.full_name">Full Name</label>
                             <input type="text" class="form-control bg-secondary border-primary text-light" 
                                    id="signupName">
                         </div>
                         <div class="mb-3">
-                            <label for="signupEmail" class="form-label">Email</label>
+                            <label for="signupEmail" class="form-label" data-i18n="auth.email">Email</label>
                             <input type="email" class="form-control bg-secondary border-primary text-light" 
                                    id="signupEmail" required>
                         </div>
                         <div class="mb-3">
-                            <label for="signupPassword" class="form-label">Password</label>
+                            <label for="signupPassword" class="form-label" data-i18n="auth.password">Password</label>
                             <input type="password" class="form-control bg-secondary border-primary text-light" 
                                    id="signupPassword" required minlength="8">
-                            <div class="form-text text-muted">
+                            <div class="form-text text-muted" data-i18n="auth.password_requirements">
                                 Must contain at least 8 characters with uppercase, lowercase, and number.
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="signupPasswordConfirm" class="form-label">Confirm Password</label>
+                            <label for="signupPasswordConfirm" class="form-label" data-i18n="auth.confirm_password">Confirm Password</label>
                             <input type="password" class="form-control bg-secondary border-primary text-light" 
                                    id="signupPasswordConfirm" required>
                         </div>
@@ -242,31 +242,31 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="agreeTos" required>
                                 <label class="form-check-label" for="agreeTos">
-                                    I agree to the <a href="#" class="text-primary">Terms of Service</a>
+                                    <span data-i18n="auth.agree_terms">I agree to the</span> <a href="#" class="text-primary" data-i18n="auth.terms_of_service">Terms of Service</a>
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="agreePrivacy" required>
                                 <label class="form-check-label" for="agreePrivacy">
-                                    I agree to the <a href="#" class="text-primary">Privacy Policy</a>
+                                    <span data-i18n="auth.agree_privacy">I agree to the</span> <a href="#" class="text-primary" data-i18n="auth.privacy_policy">Privacy Policy</a>
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="agreeMarketing">
-                                <label class="form-check-label" for="agreeMarketing">
+                                <label class="form-check-label" for="agreeMarketing" data-i18n="auth.marketing_emails">
                                     I want to receive marketing emails (optional)
                                 </label>
                             </div>
                         </div>
                         
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Create Account</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="auth.create_account">Create Account</button>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer border-primary justify-content-center">
-                    <span class="text-muted">Already have an account?</span>
-                    <a href="#" class="text-primary ms-1" onclick="switchToLogin()">Sign in</a>
+                    <span class="text-muted" data-i18n="auth.already_have_account">Already have an account?</span>
+                    <a href="#" class="text-primary ms-1" onclick="switchToLogin()" data-i18n="auth.sign_in">Sign in</a>
                 </div>
             </div>
         </div>
