@@ -202,6 +202,13 @@
     "privacy_policy": "Privacy Policy",
     "or": "oppure"
   },
+  "legal": {
+    "terms_title": "Termini di Servizio",
+    "privacy_title": "Privacy Policy",
+    "last_updated": "Ultimo aggiornamento",
+    "back_to_home": "Torna alla Home",
+    "privacy_settings": "Impostazioni Privacy"
+  },
   "output": {
     "title": "Impostazioni File di Output",
     "description": "Scegli quali file salvare dopo l'elaborazione",
